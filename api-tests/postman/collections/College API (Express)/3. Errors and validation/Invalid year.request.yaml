@@ -1,0 +1,21 @@
+$kind: http-request
+name: Invalid year
+description: 'Well-formed JSON but breaks a rule: 422.'
+url: '{{baseUrl}}/students'
+method: POST
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Asha",
+      "department": "CSE",
+      "year": 9
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: 'pm.test("Status is 422", function () { pm.response.to.have.status(422); });'
+order: 2000

@@ -1,0 +1,13 @@
+$kind: http-request
+name: Protected route with key
+description: 'Middleware calls next(), so the route handler runs.'
+url: '{{baseUrl}}/classroom/notes'
+method: GET
+headers:
+  - key: x-classroom-key
+    value: learn-node
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: 'pm.test("Status is 200", function () { pm.response.to.have.status(200); });'
+order: 2000

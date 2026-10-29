@@ -1,0 +1,15 @@
+$kind: http-request
+description: "What a browser sends before a PATCH with JSON. Expected: 204 plus Access-Control-Allow-Methods."
+url: "{{baseUrl}}/students/101"
+method: OPTIONS
+headers:
+  Origin: http://localhost:5173
+  Access-Control-Request-Method: PATCH
+  Access-Control-Request-Headers: content-type
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status is 204", function () { pm.response.to.have.status(204); });
+      pm.test("Access-Control-Allow-Origin is http://localhost:5173", function () { pm.expect(pm.response.headers.get("Access-Control-Allow-Origin")).to.eql("http://localhost:5173"); });
+    language: text/javascript
+order: 3000

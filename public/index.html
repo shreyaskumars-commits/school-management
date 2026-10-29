@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Management Portal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>Student Management Portal</h1>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2 id="form-title">Add student</h2>
+      <form id="student-form">
+        <label>Name
+          <input id="name" required />
+        </label>
+        <label>Department
+          <input id="department" required />
+        </label>
+        <label>Year
+          <select id="year">
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+          </select>
+        </label>
+        <div class="actions">
+          <button type="submit" class="btn primary" id="save-btn">Add student</button>
+          <button type="button" class="btn" id="cancel-btn" hidden>Cancel</button>
+        </div>
+      </form>
+      <p id="message" role="status"></p>
+    </section>
+
+    <section class="card">
+      <div class="list-head">
+        <h2>Students <span id="count"></span></h2>
+        <label class="filter">Department
+          <input id="filter" placeholder="e.g. CSE" />
+        </label>
+      </div>
+
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Name</th><th>Department</th><th>Year</th><th></th></tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+
+      <div class="pager">
+        <button class="btn" id="prev">Previous</button>
+        <span id="page-info"></span>
+        <button class="btn" id="next">Next</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

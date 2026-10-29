@@ -1,0 +1,11 @@
+$kind: http-request
+description: page must be a positive whole number.
+url: "{{baseUrl}}/students?page=0"
+method: GET
+queryParams:
+  page: "0"
+scripts:
+  - type: afterResponse
+    code: pm.test("Status is 400", function () { pm.response.to.have.status(400); });
+    language: text/javascript
+order: 8000

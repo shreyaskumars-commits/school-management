@@ -1,0 +1,757 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-10-28T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v8.6.1",
+  "resources": [
+    {
+      "_id": "wrk_f86a273ca745476b285810c3b4ccc47f",
+      "parentId": null,
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "name": "College API (Express)",
+      "description": "Test collection for express-student-api. Start the server with `npm start`, then run requests top to bottom. Restart the server to reset the in-memory data.",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_593616de15330c0fb2d55e55410bf994",
+      "parentId": "wrk_f86a273ca745476b285810c3b4ccc47f",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:3000"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1767225600000,
+      "_type": "environment"
+    },
+    {
+      "_id": "fld_c3fff161553a85b07777d199f5cb7c40",
+      "parentId": "wrk_f86a273ca745476b285810c3b4ccc47f",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "name": "1. Basics",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1767225600000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_c5f2b6fc1ea055f63c75d5b241f142ae",
+      "parentId": "fld_c3fff161553a85b07777d199f5cb7c40",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/",
+      "name": "Welcome",
+      "description": "Server is up. Expected: 200 and a welcome message.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1767225599900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_a9d09b799f9629b6c46f8e655b2690e6",
+      "parentId": "wrk_f86a273ca745476b285810c3b4ccc47f",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "name": "2. Students (CRUD)",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1767225599000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_74959983cb7002a4a3b0bf7416294cf0",
+      "parentId": "fld_a9d09b799f9629b6c46f8e655b2690e6",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/students",
+      "name": "List students",
+      "description": "Returns { page, limit, total, data }.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1767225599800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_ebd246cae4cc4931d68d88fabcf69826",
+      "parentId": "fld_a9d09b799f9629b6c46f8e655b2690e6",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/students",
+      "name": "Filter by department (query)",
+      "description": "req.query.department. Try cse (case-insensitive) or IT.",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "department",
+          "value": "CSE"
+        }
+      ],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1767225599700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_cc62e3b617038cf5ffb6cf5ccfb0ebd9",
+      "parentId": "fld_a9d09b799f9629b6c46f8e655b2690e6",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/students",
+      "name": "Pagination (query)",
+      "description": "req.query.page and req.query.limit.",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "page",
+          "value": "2"
+        },
+        {
+          "name": "limit",
+          "value": "2"
+        }
+      ],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1767225599600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_c53e1d54327c26af8817476e2d3bae0b",
+      "parentId": "fld_a9d09b799f9629b6c46f8e655b2690e6",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/students/101",
+      "name": "Get one student (path param)",
+      "description": "req.params.id = \"101\".",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1767225599500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_d20e90e2e0252c7f0aa297cb5fab038f",
+      "parentId": "fld_a9d09b799f9629b6c46f8e655b2690e6",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/students",
+      "name": "Create student (body)",
+      "description": "req.body. Expected: 201 Created with the new student and its id.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Zoya\",\n  \"department\": \"IT\",\n  \"year\": 2\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1767225599400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_68dd028e40d5117ab34d5a7457044de0",
+      "parentId": "fld_a9d09b799f9629b6c46f8e655b2690e6",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/students/101",
+      "name": "Update student (param + query + body)",
+      "description": "All three request sources in one call: req.params.id, req.query.notify, req.body.",
+      "method": "PATCH",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"department\": \"AI\"\n}"
+      },
+      "parameters": [
+        {
+          "name": "notify",
+          "value": "true"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1767225599300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_dbfd11e682830bcdc88e3734ebaf9db9",
+      "parentId": "fld_a9d09b799f9629b6c46f8e655b2690e6",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/students/104",
+      "name": "Delete student",
+      "description": "Expected: 204 No Content (empty body). Restart the server to bring Kiran back.",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1767225599200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_771b753ec3d11a29750321e94912ee86",
+      "parentId": "fld_a9d09b799f9629b6c46f8e655b2690e6",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/students/104",
+      "name": "Delete the same student again",
+      "description": "The student no longer exists, so: 404 Not Found.",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1767225599100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_4908ea5a92d911846d14850adb0a8404",
+      "parentId": "wrk_f86a273ca745476b285810c3b4ccc47f",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "name": "3. Errors and validation",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1767225598000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_18b47f2ec4d28224be2153cdb3da4dc2",
+      "parentId": "fld_4908ea5a92d911846d14850adb0a8404",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/students",
+      "name": "Missing required fields",
+      "description": "department is missing: 400 Bad Request.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Asha\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1767225599000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_c83381400e20fa4cd0723b2c5bf16006",
+      "parentId": "fld_4908ea5a92d911846d14850adb0a8404",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/students",
+      "name": "Invalid year",
+      "description": "Well-formed JSON but breaks a rule: 422.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Asha\",\n  \"department\": \"CSE\",\n  \"year\": 9\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1767225598900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_168a29b9162c2e93f92c2d795b630a68",
+      "parentId": "fld_4908ea5a92d911846d14850adb0a8404",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/students",
+      "name": "Body not sent as JSON",
+      "description": "express.json() ignores non-JSON bodies, so req.body is undefined.",
+      "method": "POST",
+      "body": {
+        "mimeType": "text/plain",
+        "text": "name=Asha"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "text/plain"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1767225598800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_fd6f75dce4d19aa293c99e0af15c9474",
+      "parentId": "fld_4908ea5a92d911846d14850adb0a8404",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/students",
+      "name": "Broken JSON",
+      "description": "express.json() rejects it; the error-handling middleware returns 400.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{ \"name\": \"Asha\", "
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1767225598700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_1102fc20cb0eaf3bb01ecbfa265d8547",
+      "parentId": "fld_4908ea5a92d911846d14850adb0a8404",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/students/abc",
+      "name": "Id is not a number",
+      "description": "Number(\"abc\") is NaN: 400.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1767225598600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_490241cadf71843c16b16bec71b9dc92",
+      "parentId": "fld_4908ea5a92d911846d14850adb0a8404",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/students/999",
+      "name": "Student not found",
+      "description": "No student 999: 404.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1767225598500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_03abdc3af1b7da4c7f95bd4956a7cb64",
+      "parentId": "fld_4908ea5a92d911846d14850adb0a8404",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/nope",
+      "name": "Unknown route",
+      "description": "No route matched: the 404 middleware answers.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1767225598400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_8422fafb2a11392737201d23593d8ccb",
+      "parentId": "fld_4908ea5a92d911846d14850adb0a8404",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/students",
+      "name": "Invalid page number",
+      "description": "page must be a positive whole number.",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "page",
+          "value": "0"
+        }
+      ],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1767225598300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_f23f546de0df814ae2e9aa5d6d89f977",
+      "parentId": "fld_4908ea5a92d911846d14850adb0a8404",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/students/101",
+      "name": "PATCH with empty body",
+      "description": "Nothing to update: 400.",
+      "method": "PATCH",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1767225598200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_0c8a521f026644cb3dc78e028b842673",
+      "parentId": "fld_4908ea5a92d911846d14850adb0a8404",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/classroom/crash",
+      "name": "Server error",
+      "description": "The route throws; the error handler returns 500 without leaking details.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1767225598100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_d53deca03e44a374f272f7cad0cdccc2",
+      "parentId": "wrk_f86a273ca745476b285810c3b4ccc47f",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "name": "4. Middleware activity",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1767225597000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_5c550f134bf71da27d25941bb97ecd6a",
+      "parentId": "fld_d53deca03e44a374f272f7cad0cdccc2",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/classroom/notes",
+      "name": "Protected route without key",
+      "description": "Middleware stops the request: 401 Unauthorized.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1767225598000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_972a04304527f6ec40e32c1dc5903479",
+      "parentId": "fld_d53deca03e44a374f272f7cad0cdccc2",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/classroom/notes",
+      "name": "Protected route with key",
+      "description": "Middleware calls next(), so the route handler runs.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "x-classroom-key",
+          "value": "learn-node"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1767225597900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_2db1c69baef3cef39fa5ccffca8d2047",
+      "parentId": "wrk_f86a273ca745476b285810c3b4ccc47f",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "name": "5. CORS",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1767225596000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_e49a061f6a40cebfc977441fef57c678",
+      "parentId": "fld_2db1c69baef3cef39fa5ccffca8d2047",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/students",
+      "name": "Allowed origin",
+      "description": "Origin matches the cors() setting. Look at the response header Access-Control-Allow-Origin.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Origin",
+          "value": "http://localhost:5173"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1767225597800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_83ba27b909f3ec4afeaefde2e661f538",
+      "parentId": "fld_2db1c69baef3cef39fa5ccffca8d2047",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/students",
+      "name": "Other origin (not approved)",
+      "description": "Still 200 here, because Insomnia and Postman are not browsers. The header still says http://localhost:5173, which does not match this Origin, so a browser page from that origin would be blocked.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Origin",
+          "value": "http://evil.example"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1767225597700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_789ebffbac846f50f4895e4bd7a560f5",
+      "parentId": "fld_2db1c69baef3cef39fa5ccffca8d2047",
+      "modified": 1767225600000,
+      "created": 1767225600000,
+      "url": "{{ _.base_url }}/students/101",
+      "name": "Preflight (OPTIONS)",
+      "description": "What a browser sends before a PATCH with JSON. Expected: 204 plus Access-Control-Allow-Methods.",
+      "method": "OPTIONS",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Origin",
+          "value": "http://localhost:5173"
+        },
+        {
+          "name": "Access-Control-Request-Method",
+          "value": "PATCH"
+        },
+        {
+          "name": "Access-Control-Request-Headers",
+          "value": "content-type"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1767225597600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+$kind: http-request
+name: Protected route without key
+description: 'Middleware stops the request: 401 Unauthorized.'
+url: '{{baseUrl}}/classroom/notes'
+method: GET
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: 'pm.test("Status is 401", function () { pm.response.to.have.status(401); });'
+order: 1000

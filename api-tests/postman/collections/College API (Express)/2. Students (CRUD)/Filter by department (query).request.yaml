@@ -1,0 +1,13 @@
+$kind: http-request
+name: Filter by department (query)
+description: req.query.department. Try cse (case-insensitive) or IT.
+url: '{{baseUrl}}/students?department=CSE'
+method: GET
+queryParams:
+  - key: department
+    value: CSE
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: 'pm.test("Status is 200", function () { pm.response.to.have.status(200); });'
+order: 2000

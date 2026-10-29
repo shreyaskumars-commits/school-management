@@ -1,0 +1,10 @@
+$kind: http-request
+name: Id is not a number
+description: 'Number("abc") is NaN: 400.'
+url: '{{baseUrl}}/students/abc'
+method: GET
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: 'pm.test("Status is 400", function () { pm.response.to.have.status(400); });'
+order: 5000

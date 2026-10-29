@@ -1,0 +1,9 @@
+$kind: http-request
+description: The route throws; the error handler returns 500 without leaking details.
+url: "{{baseUrl}}/classroom/crash"
+method: GET
+scripts:
+  - type: afterResponse
+    code: pm.test("Status is 500", function () { pm.response.to.have.status(500); });
+    language: text/javascript
+order: 10000

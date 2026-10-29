@@ -1,0 +1,13 @@
+# Use this workspace to collaborate
+workspace:
+  id: c7e1b5a6-c2d2-478e-8173-4a8a844b6570
+
+localResources:
+  collections:
+    - ../College API (Express)
+
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
+
+cloudResources:
+  collections:
+    ../College API (Express): f86a273ca745476b285810c3b4ccc47f

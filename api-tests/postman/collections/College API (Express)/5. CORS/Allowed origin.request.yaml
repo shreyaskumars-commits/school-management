@@ -1,0 +1,15 @@
+$kind: http-request
+name: Allowed origin
+description: 'Origin matches the cors() setting. Look at the response header Access-Control-Allow-Origin.'
+url: '{{baseUrl}}/students'
+method: GET
+headers:
+  - key: Origin
+    value: 'http://localhost:5173'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200", function () { pm.response.to.have.status(200); });
+      pm.test("Access-Control-Allow-Origin is http://localhost:5173", function () { pm.expect(pm.response.headers.get("Access-Control-Allow-Origin")).to.eql("http://localhost:5173"); });
+order: 1000

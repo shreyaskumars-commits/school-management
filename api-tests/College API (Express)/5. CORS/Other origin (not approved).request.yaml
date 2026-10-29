@@ -1,0 +1,13 @@
+$kind: http-request
+description: Still 200 here, because Insomnia and Postman are not browsers. The header still says http://localhost:5173, which does not match this Origin, so a browser page from that origin would be blocked.
+url: "{{baseUrl}}/students"
+method: GET
+headers:
+  Origin: http://evil.example
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status is 200", function () { pm.response.to.have.status(200); });
+      pm.test("Access-Control-Allow-Origin is not http://evil.example", function () { pm.expect(pm.response.headers.get("Access-Control-Allow-Origin")).to.not.eql("http://evil.example"); });
+    language: text/javascript
+order: 2000

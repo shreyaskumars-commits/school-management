@@ -1,0 +1,21 @@
+$kind: http-request
+name: Create student (body)
+description: 'req.body. Expected: 201 Created with the new student and its id.'
+url: '{{baseUrl}}/students'
+method: POST
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Zoya",
+      "department": "IT",
+      "year": 2
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: 'pm.test("Status is 201", function () { pm.response.to.have.status(201); });'
+order: 5000

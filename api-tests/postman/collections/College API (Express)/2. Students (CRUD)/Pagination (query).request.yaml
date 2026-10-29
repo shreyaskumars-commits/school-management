@@ -1,0 +1,15 @@
+$kind: http-request
+name: Pagination (query)
+description: req.query.page and req.query.limit.
+url: '{{baseUrl}}/students?page=2&limit=2'
+method: GET
+queryParams:
+  - key: page
+    value: '2'
+  - key: limit
+    value: '2'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: 'pm.test("Status is 200", function () { pm.response.to.have.status(200); });'
+order: 3000

@@ -1,0 +1,13 @@
+$kind: http-request
+name: Invalid page number
+description: page must be a positive whole number.
+url: '{{baseUrl}}/students?page=0'
+method: GET
+queryParams:
+  - key: page
+    value: '0'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: 'pm.test("Status is 400", function () { pm.response.to.have.status(400); });'
+order: 8000

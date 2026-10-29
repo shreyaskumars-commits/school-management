@@ -1,0 +1,10 @@
+$kind: http-request
+name: Delete the same student again
+description: 'The student no longer exists, so: 404 Not Found.'
+url: '{{baseUrl}}/students/104'
+method: DELETE
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: 'pm.test("Status is 404", function () { pm.response.to.have.status(404); });'
+order: 8000

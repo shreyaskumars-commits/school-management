@@ -1,0 +1,10 @@
+$kind: http-request
+name: Get one student (path param)
+description: 'req.params.id = "101".'
+url: '{{baseUrl}}/students/101'
+method: GET
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: 'pm.test("Status is 200", function () { pm.response.to.have.status(200); });'
+order: 4000
