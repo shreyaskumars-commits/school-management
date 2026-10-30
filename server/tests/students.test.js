@@ -4,13 +4,27 @@ import assert from "node:assert/strict";
 // server.js starts listening on port 3000 as soon as it is imported
 const BASE = "http://localhost:3000";
 let server;
+let principalToken;
+let teacherToken;
+
+async function login(userId, password) {
+  const res = await fetch(BASE + "/login", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ userId, password }),
+  });
+  return res.json();
+}
 
 before(async () => {
   server = await import("../server.js");
+  principalToken = (await login("principal", "principal123")).token;
+  teacherToken = (await login("teacher", "teacher123")).token;
 });
 after(() => process.exit(0)); // the app has no close(), so end the process
 
-async function call(method, path, body, headers = {}) {
+// logs in as the principal unless the headers say otherwise
+async function call(method, path, body, headers = { authorization: `Bearer ${principalToken}` }) {
   const res = await fetch(BASE + path, {
     method,
     headers: body === undefined ? headers : { "content-type": "application/json", ...headers },
@@ -116,6 +130,35 @@ describe("create, update, delete", () => {
   it("does not reuse the deleted id", async () => {
     const { body } = await call("POST", "/students", { name: "Next", department: "IT" });
     assert.ok(body.id > id);
+  });
+});
+
+describe("login and roles", () => {
+  it("rejects a wrong password and missing fields", async () => {
+    const res = await fetch(BASE + "/login", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ userId: "teacher", password: "nope" }),
+    });
+    assert.equal(res.status, 401);
+    assert.equal((await call("POST", "/login", {}, {})).status, 400);
+  });
+
+  it("returns the role on login", async () => {
+    assert.equal((await login("teacher", "teacher123")).role, "teacher");
+  });
+
+  it("/students needs a login", async () => {
+    assert.equal((await call("GET", "/students", undefined, {})).status, 401);
+  });
+
+  it("a teacher can view, add and edit but not delete", async () => {
+    const h = { authorization: `Bearer ${teacherToken}` };
+    assert.equal((await call("GET", "/students", undefined, h)).status, 200);
+    const made = await call("POST", "/students", { name: "T", department: "IT" }, h);
+    assert.equal(made.status, 201);
+    assert.equal((await call("PATCH", `/students/${made.body.id}`, { year: 2 }, h)).status, 200);
+    assert.equal((await call("DELETE", `/students/${made.body.id}`, undefined, h)).status, 403);
   });
 });
 

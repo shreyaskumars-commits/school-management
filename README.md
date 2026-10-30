@@ -7,9 +7,18 @@ in-memory array instead of a database.
 ## Run it
 
 ```bash
+cd server
 npm install
 npm start          # or: npm run dev  (restarts on save, uses nodemon)
+npm test
+
+# in a second terminal
+cd client
+npm install
+npm run dev        # http://localhost:5173
 ```
+
+Log in as `principal` / `principal123` (can delete) or `teacher` / `teacher123` (cannot delete).
 
 Server: http://localhost:3000 (needs Node 18 or newer).
 
@@ -71,9 +80,16 @@ Insomnia, Postman and curl are not browsers, so they never show a CORS error.
 
 ## Files
 
-| File | Purpose |
+| Path | Purpose |
 |---|---|
-| `server.js` | The whole API: middleware, validation, routes, 404 and error handler |
-| `classroom.js` | A small router used by the middleware activity |
+| `server/server.js` | Entry point: starts the server |
+| `server/src/app.js` | Builds the Express app: middleware, routes, 404 and error handler |
+| `server/src/apis/` | Route definitions (students, auth, classroom) |
+| `server/src/controllers/` | Request handlers |
+| `server/src/middlewares/` | Logger, auth and roles, validation, loaders, error handlers |
+| `server/src/services/` | Login and session logic |
+| `server/src/data/`, `config/`, `utils/` | In-memory store, settings, validators |
+| `server/tests/` | API tests (`npm test`) |
+| `client/` | React front end |
 | `api-tests/` | Insomnia and Postman collections |
-| `Node_Express_Backend.pptx` | The 48-slide classroom deck (speaker notes on every slide). The code on the "Complete app" slides is this `server.js` |
+| `Node_Express_Backend.pptx` | The 48-slide classroom deck (speaker notes on every slide). The code on the "Complete app" slides is the original single-file `server.js` |

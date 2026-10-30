@@ -22,9 +22,11 @@ export default function StudentTable({ students, onEdit, onDelete }) {
                 <button className="btn small" onClick={() => onEdit(s)}>
                   Edit
                 </button>{" "}
-                <button className="btn small danger" onClick={() => onDelete(s)}>
-                  Delete
-                </button>
+                {onDelete && (
+                  <button className="btn small danger" onClick={() => onDelete(s)}>
+                    Delete
+                  </button>
+                )}
               </td>
             </tr>
           ))

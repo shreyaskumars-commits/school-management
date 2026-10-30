@@ -4,7 +4,7 @@ import StudentForm from "./components/StudentForm.jsx";
 import StudentTable from "./components/StudentTable.jsx";
 import Pager from "./components/Pager.jsx";
 
-export default function App() {
+export default function App({ userId, canDelete = true, onLogout }) {
   const list = useStudents();
   const [editing, setEditing] = useState(null);
 
@@ -36,6 +36,12 @@ export default function App() {
     <>
       <header className="topbar">
         <h1>Student Management Portal</h1>
+        {onLogout && (
+          <span>
+            {userId} &nbsp;
+            <button className="btn small" onClick={onLogout}>Log out</button>
+          </span>
+        )}
       </header>
 
       <main>
@@ -63,7 +69,7 @@ export default function App() {
           <StudentTable
             students={list.students}
             onEdit={handleEdit}
-            onDelete={handleDelete}
+            onDelete={canDelete ? handleDelete : undefined}
           />
           <Pager
             page={list.page}
