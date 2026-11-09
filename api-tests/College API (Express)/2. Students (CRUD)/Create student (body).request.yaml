@@ -3,6 +3,7 @@ description: "req.body. Expected: 201 Created with the new student and its id."
 url: "{{baseUrl}}/students"
 method: POST
 headers:
+  Authorization: 'Bearer {{token}}'
   Content-Type: application/json
 body:
   type: json
@@ -14,6 +15,6 @@ body:
     }
 scripts:
   - type: afterResponse
-    code: pm.test("Status is 201", function () { pm.response.to.have.status(201); });
+    code: pm.test("Status is 201", function () { pm.response.to.have.status(201); }); pm.collectionVariables.set("newStudentId", pm.response.json().id);
     language: text/javascript
 order: 5000

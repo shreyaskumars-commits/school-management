@@ -1,9 +1,11 @@
 $kind: http-request
 name: PATCH with empty body
 description: 'Nothing to update: 400.'
-url: '{{baseUrl}}/students/101'
+url: '{{baseUrl}}/students/{{studentId}}'
 method: PATCH
 headers:
+  - key: Authorization
+    value: 'Bearer {{token}}'
   - key: Content-Type
     value: application/json
 body:

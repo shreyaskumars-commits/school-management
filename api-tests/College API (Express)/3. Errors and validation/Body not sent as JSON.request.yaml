@@ -3,6 +3,7 @@ description: express.json() ignores non-JSON bodies, so req.body is undefined.
 url: "{{baseUrl}}/students"
 method: POST
 headers:
+  Authorization: 'Bearer {{token}}'
   Content-Type: text/plain
 body:
   type: text

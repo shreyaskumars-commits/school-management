@@ -1,4 +1,4 @@
 $kind: collection
-description: Test collection for express-student-api. Start the server with `npm start`, then run requests top to bottom. Restart the server to reset the in-memory data.
+description: Test collection for express-student-api. Start the server and MongoDB, then run requests top to bottom (Login first).
 variables:
   baseUrl: http://localhost:3000

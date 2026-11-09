@@ -4,6 +4,8 @@ description: 'Well-formed JSON but breaks a rule: 422.'
 url: '{{baseUrl}}/students'
 method: POST
 headers:
+  - key: Authorization
+    value: 'Bearer {{token}}'
   - key: Content-Type
     value: application/json
 body:

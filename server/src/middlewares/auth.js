@@ -6,7 +6,11 @@ export function bearerToken(req) {
 
 // attaches req.user, or answers 401
 export function requireLogin(req, res, next) {
-  const user = findSession(bearerToken(req));
+  
+  const token = bearerToken(req);
+  const user = findSession(token);
+  console.log('hi');
+  console.log(`token=${token}, role=${user?.role}`);
   if (!user) {
     return res.status(401).json({ error: "Please log in" });
   }

@@ -1,8 +1,11 @@
 $kind: http-request
 name: Get one student (path param)
-description: 'req.params.id = "101".'
-url: '{{baseUrl}}/students/101'
+description: 'req.params.id = the id of the first listed student (saved as studentId by List students).'
+url: '{{baseUrl}}/students/{{studentId}}'
 method: GET
+headers:
+  - key: Authorization
+    value: 'Bearer {{token}}'
 scripts:
   - type: afterResponse
     language: text/javascript

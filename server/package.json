@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "express-student-server",
   "version": "1.0.0",
   "type": "module",
@@ -9,10 +9,10 @@
   },
   "dependencies": {
     "cors": "^2.8.6",
-    "express": "^5.3.0"
+    "express": "^5.3.0",
+    "mongoose": "^9.11.4"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
   }
 }
-

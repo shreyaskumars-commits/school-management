@@ -4,6 +4,8 @@ description: 'Still 200 here, because Postman is not a browser. The header still
 url: '{{baseUrl}}/students'
 method: GET
 headers:
+  - key: Authorization
+    value: 'Bearer {{token}}'
   - key: Origin
     value: 'http://evil.example'
 scripts:

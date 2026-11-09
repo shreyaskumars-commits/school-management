@@ -2,6 +2,8 @@ $kind: http-request
 description: req.query.department. Try cse (case-insensitive) or IT.
 url: "{{baseUrl}}/students?department=CSE"
 method: GET
+headers:
+  Authorization: 'Bearer {{token}}'
 queryParams:
   department: CSE
 scripts:

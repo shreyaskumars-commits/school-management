@@ -2,8 +2,10 @@ $kind: http-request
 description: Returns { page, limit, total, data }.
 url: "{{baseUrl}}/students"
 method: GET
+headers:
+  Authorization: 'Bearer {{token}}'
 scripts:
   - type: afterResponse
-    code: pm.test("Status is 200", function () { pm.response.to.have.status(200); });
+    code: pm.test("Status is 200", function () { pm.response.to.have.status(200); }); var first = pm.response.json().data[0]; if (first) pm.collectionVariables.set('studentId', first.id);
     language: text/javascript
 order: 1000

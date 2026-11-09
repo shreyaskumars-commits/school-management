@@ -1,6 +1,9 @@
 import { after, before, describe, it } from "node:test";
 import assert from "node:assert/strict";
 
+// use a separate database so the real data is never touched
+process.env.MONGO_URI = "mongodb://localhost:27017/School_test";
+
 // server.js starts listening on port 3000 as soon as it is imported
 const BASE = "http://localhost:3000";
 let server;
@@ -16,8 +19,20 @@ async function login(userId, password) {
   return res.json();
 }
 
+const SEED = [
+  { name: "Asha", department: "CSE", year: 1 },
+  { name: "Ravi", department: "CSE", year: 2 },
+  { name: "Meera", department: "ECE", year: 3 },
+  { name: "John", department: "MECH", year: 4 },
+];
+let firstId;
+const MISSING_ID = 999999; // valid number, no such student
+
 before(async () => {
   server = await import("../server.js");
+  const { Student } = await import("../src/models/Student.js");
+  await Student.deleteMany({});
+  firstId = (await Student.insertMany(SEED))[0].id;
   principalToken = (await login("principal", "principal123")).token;
   teacherToken = (await login("teacher", "teacher123")).token;
 });
@@ -62,14 +77,16 @@ describe("GET /students", () => {
 
 describe("GET /students/:id", () => {
   it("returns one student", async () => {
-    const { status, body } = await call("GET", "/students/101");
+    const { status, body } = await call("GET", `/students/${firstId}`);
     assert.equal(status, 200);
     assert.equal(body.name, "Asha");
+    assert.equal(body.id, firstId);
+    assert.equal(body._id, undefined);
   });
   it("404 for unknown id", async () => {
-    assert.equal((await call("GET", "/students/999")).status, 404);
+    assert.equal((await call("GET", `/students/${MISSING_ID}`)).status, 404);
   });
-  it("400 for a non-numeric id", async () => {
+  it("400 for an invalid id", async () => {
     assert.equal((await call("GET", "/students/abc")).status, 400);
   });
 });
@@ -118,7 +135,7 @@ describe("create, update, delete", () => {
   it("PATCH validates input and the id", async () => {
     assert.equal((await call("PATCH", `/students/${id}`, {})).status, 400);
     assert.equal((await call("PATCH", `/students/${id}`, { year: 0 })).status, 422);
-    assert.equal((await call("PATCH", "/students/999", { year: 2 })).status, 404);
+    assert.equal((await call("PATCH", `/students/${MISSING_ID}`, { year: 2 })).status, 404);
   });
 
   it("DELETE removes the student", async () => {
@@ -129,7 +146,8 @@ describe("create, update, delete", () => {
 
   it("does not reuse the deleted id", async () => {
     const { body } = await call("POST", "/students", { name: "Next", department: "IT" });
-    assert.ok(body.id > id);
+    assert.ok(body.id);
+    assert.notEqual(body.id, id);
   });
 });
 
@@ -164,7 +182,7 @@ describe("login and roles", () => {
 
 describe("misc", () => {
   it("PUT is not defined", async () => {
-    assert.equal((await call("PUT", "/students/101", { name: "a" })).status, 404);
+    assert.equal((await call("PUT", `/students/${firstId}`, { name: "a" })).status, 404);
   });
   it("classroom notes need the key", async () => {
     assert.equal((await call("GET", "/classroom/notes")).status, 401);

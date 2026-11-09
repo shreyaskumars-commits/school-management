@@ -1,8 +1,11 @@
 $kind: http-request
 name: Delete student
-description: 'Expected: 204 No Content (empty body). Restart the server to bring Kiran back.'
-url: '{{baseUrl}}/students/104'
+description: 'Expected: 204 No Content (empty body).'
+url: '{{baseUrl}}/students/{{newStudentId}}'
 method: DELETE
+headers:
+  - key: Authorization
+    value: 'Bearer {{token}}'
 scripts:
   - type: afterResponse
     language: text/javascript

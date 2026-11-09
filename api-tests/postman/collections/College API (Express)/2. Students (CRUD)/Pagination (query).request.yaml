@@ -3,6 +3,9 @@ name: Pagination (query)
 description: req.query.page and req.query.limit.
 url: '{{baseUrl}}/students?page=2&limit=2'
 method: GET
+headers:
+  - key: Authorization
+    value: 'Bearer {{token}}'
 queryParams:
   - key: page
     value: '2'

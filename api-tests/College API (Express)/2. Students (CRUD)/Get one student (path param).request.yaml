@@ -1,7 +1,9 @@
 $kind: http-request
-description: req.params.id = "101".
-url: "{{baseUrl}}/students/101"
+description: req.params.id = the id of the first listed student (saved as studentId by List students).
+url: "{{baseUrl}}/students/{{studentId}}"
 method: GET
+headers:
+  Authorization: 'Bearer {{token}}'
 scripts:
   - type: afterResponse
     code: pm.test("Status is 200", function () { pm.response.to.have.status(200); });

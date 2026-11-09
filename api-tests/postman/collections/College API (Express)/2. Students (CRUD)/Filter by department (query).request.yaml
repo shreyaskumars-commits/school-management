@@ -3,6 +3,9 @@ name: Filter by department (query)
 description: req.query.department. Try cse (case-insensitive) or IT.
 url: '{{baseUrl}}/students?department=CSE'
 method: GET
+headers:
+  - key: Authorization
+    value: 'Bearer {{token}}'
 queryParams:
   - key: department
     value: CSE

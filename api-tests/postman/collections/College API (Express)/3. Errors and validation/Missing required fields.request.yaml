@@ -4,6 +4,8 @@ description: 'department is missing: 400 Bad Request.'
 url: '{{baseUrl}}/students'
 method: POST
 headers:
+  - key: Authorization
+    value: 'Bearer {{token}}'
   - key: Content-Type
     value: application/json
 body:

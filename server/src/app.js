@@ -11,7 +11,6 @@ app.use(logger);
 app.use(cors({ origin: FRONTEND_ORIGIN }));
 app.use(express.json());
 
-// Student Management Portal UI -> http://localhost:3000/portal
 app.use("/portal", express.static("public"));
 
 app.use(apis);

@@ -1,7 +1,9 @@
 $kind: http-request
 description: "The student no longer exists, so: 404 Not Found."
-url: "{{baseUrl}}/students/104"
+url: "{{baseUrl}}/students/{{newStudentId}}"
 method: DELETE
+headers:
+  Authorization: 'Bearer {{token}}'
 scripts:
   - type: afterResponse
     code: pm.test("Status is 404", function () { pm.response.to.have.status(404); });

@@ -1,7 +1,7 @@
 $kind: http-request
 name: 'Preflight (OPTIONS)'
 description: 'What a browser sends before a PATCH with JSON. Expected: 204 plus Access-Control-Allow-Methods.'
-url: '{{baseUrl}}/students/101'
+url: '{{baseUrl}}/students/{{studentId}}'
 method: OPTIONS
 headers:
   - key: Origin

@@ -2,6 +2,8 @@ $kind: http-request
 description: req.query.page and req.query.limit.
 url: "{{baseUrl}}/students?page=2&limit=2"
 method: GET
+headers:
+  Authorization: 'Bearer {{token}}'
 queryParams:
   page: "2"
   limit: "2"

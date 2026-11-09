@@ -1,9 +1,11 @@
 $kind: http-request
 name: 'Update student (param + query + body)'
 description: 'All three request sources in one call: req.params.id, req.query.notify, req.body.'
-url: '{{baseUrl}}/students/101?notify=true'
+url: '{{baseUrl}}/students/{{newStudentId}}?notify=true'
 method: PATCH
 headers:
+  - key: Authorization
+    value: 'Bearer {{token}}'
   - key: Content-Type
     value: application/json
 queryParams:

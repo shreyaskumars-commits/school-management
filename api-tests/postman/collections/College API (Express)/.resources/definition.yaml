@@ -1,3 +1,5 @@
 $kind: collection
-name: College API (Express)
 description: Express.js Student API — covers CRUD, validation, middleware, CORS, and error handling.
+variables:
+  studentId: ""
+  newStudentId: ""

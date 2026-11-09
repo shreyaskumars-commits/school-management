@@ -4,6 +4,8 @@ description: 'Origin matches the cors() setting. Look at the response header Acc
 url: '{{baseUrl}}/students'
 method: GET
 headers:
+  - key: Authorization
+    value: 'Bearer {{token}}'
   - key: Origin
     value: 'http://localhost:5173'
 scripts:

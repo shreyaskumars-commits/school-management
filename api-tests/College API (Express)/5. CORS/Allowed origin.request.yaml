@@ -3,6 +3,7 @@ description: Origin matches the cors() setting. Look at the response header Acce
 url: "{{baseUrl}}/students"
 method: GET
 headers:
+  Authorization: 'Bearer {{token}}'
   Origin: http://localhost:5173
 scripts:
   - type: afterResponse

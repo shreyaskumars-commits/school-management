@@ -1,7 +1,9 @@
 $kind: http-request
-description: "No student 999: 404."
-url: "{{baseUrl}}/students/999"
+description: "Valid numeric id but no such student: 404."
+url: "{{baseUrl}}/students/999999"
 method: GET
+headers:
+  Authorization: 'Bearer {{token}}'
 scripts:
   - type: afterResponse
     code: pm.test("Status is 404", function () { pm.response.to.have.status(404); });

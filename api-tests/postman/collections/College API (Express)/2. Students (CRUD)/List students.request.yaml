@@ -3,8 +3,11 @@ name: List students
 description: Returns { page, limit, total, data }.
 url: '{{baseUrl}}/students'
 method: GET
+headers:
+  - key: Authorization
+    value: 'Bearer {{token}}'
 scripts:
   - type: afterResponse
     language: text/javascript
-    code: 'pm.test("Status is 200", function () { pm.response.to.have.status(200); });'
+    code: 'pm.test("Status is 200", function () { pm.response.to.have.status(200); }); var first = pm.response.json().data[0]; if (first) pm.collectionVariables.set("studentId", first.id);'
 order: 1000

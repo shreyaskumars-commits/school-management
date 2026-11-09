@@ -3,6 +3,7 @@ description: Still 200 here, because Insomnia and Postman are not browsers. The 
 url: "{{baseUrl}}/students"
 method: GET
 headers:
+  Authorization: 'Bearer {{token}}'
   Origin: http://evil.example
 scripts:
   - type: afterResponse

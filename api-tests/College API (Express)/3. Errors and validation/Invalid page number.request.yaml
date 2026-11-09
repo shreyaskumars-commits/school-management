@@ -2,6 +2,8 @@ $kind: http-request
 description: page must be a positive whole number.
 url: "{{baseUrl}}/students?page=0"
 method: GET
+headers:
+  Authorization: 'Bearer {{token}}'
 queryParams:
   page: "0"
 scripts:
