@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { getAdminConfig, saveAdminConfig } from "../api.js";
+import {
+  getAdminConfig, saveAdminConfig, uploadExcel, downloadSampleExcel,
+} from "../api.js";
 
 const ROLES = ["principal", "teacher"];
 
@@ -100,6 +102,12 @@ export default function AdminPage() {
     if (c) setPrompts(c.prompts);
   }
 
+  async function handleFile(e) {
+    const file = e.target.files[0];
+    e.target.value = ""; // allows choosing the same file again
+    if (file) await run(() => uploadExcel(file), `Imported ${file.name}`);
+  }
+
   if (!config) {
     return (
       <main>
@@ -128,9 +136,61 @@ export default function AdminPage() {
           onChange={(version) => changeMode({ version }, `Switched to ${version.toUpperCase()}`)}
         />
         {v2 ? (
-          <p className="hint">
-            Chat reads the <code>school_review</code> collection ({config.schoolRows} reviews).
-          </p>
+          <>
+            <Toggle
+              label="V2 data"
+              value={config.v2Source}
+              disabled={busy}
+              options={[
+                { value: "db", label: "Connect to school DB" },
+                { value: "excel", label: "Excel file" },
+              ]}
+              onChange={(v2Source) =>
+                changeMode({ v2Source }, v2Source === "db" ? "Connected to school DB" : "Using Excel data")
+              }
+            />
+            {config.v2Source === "db" ? (
+              <p className="hint">
+                Chat reads the <code>school_review</code> collection ({config.schoolRows} reviews).
+              </p>
+            ) : (
+              <div className="excel-box">
+                <p className="hint">
+                  {config.excel.rows > 0
+                    ? `Using ${config.excel.rows} rows from ${config.excel.fileName ?? "an uploaded file"}.`
+                    : "No file uploaded yet, so the chat has no review data."}
+                </p>
+                <div className="actions">
+                  <label className="btn file-btn">
+                    Upload .xlsx
+                    <input
+                      type="file"
+                      accept=".xlsx"
+                      hidden
+                      disabled={busy}
+                      onChange={handleFile}
+                    />
+                  </label>
+                  <button
+                    type="button"
+                    className="btn"
+                    onClick={() =>
+                      downloadSampleExcel().catch((err) =>
+                        setMessage({ text: err.message, isError: true }),
+                      )
+                    }
+                  >
+                    Download sample
+                  </button>
+                </div>
+                <p className="hint">
+                  Columns (row 1): studentId, studentName, department, year, rating,
+                  comment, reviewedBy, date (YYYY-MM-DD), confidential. Each upload
+                  replaces the previous one.
+                </p>
+              </div>
+            )}
+          </>
         ) : (
           <p className="hint">
             V1 is the original behaviour: the fixed prompt and the 5-student

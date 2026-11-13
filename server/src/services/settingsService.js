@@ -25,7 +25,7 @@ export async function getSettings() {
   if (!doc) {
     doc = await Setting.findOneAndUpdate(
       { key: "main" },
-      { $setOnInsert: { key: "main", version: "v1", prompts: DEFAULT_PROMPTS } },
+      { $setOnInsert: { key: "main", version: "v1", v2Source: "db", prompts: DEFAULT_PROMPTS } },
       { upsert: true, returnDocument: "after" }
     );
   }
@@ -36,6 +36,7 @@ export async function getSettings() {
 export function publicView(s) {
   return {
     version: s.version,
+    source: s.version === "v2" ? s.v2Source : "legacy",
   };
 }
 
@@ -47,6 +48,10 @@ export function validateConfig(body) {
   if (body.version !== undefined) {
     if (!["v1", "v2"].includes(body.version)) return { error: "version must be v1 or v2" };
     patch.version = body.version;
+  }
+  if (body.v2Source !== undefined) {
+    if (!["db", "excel"].includes(body.v2Source)) return { error: "v2Source must be db or excel" };
+    patch.v2Source = body.v2Source;
   }
   for (const role of ["principal", "teacher"]) {
     const p = body.prompts?.[role];

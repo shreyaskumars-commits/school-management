@@ -119,8 +119,34 @@ export function getAdminConfig() {
   return request("/admin/config");
 }
 
-// body can hold version and/or prompts
+// body can hold version, v2Source and/or prompts
 export function saveAdminConfig(changes) {
   return request("/admin/config", { method: "PUT", body: JSON.stringify(changes) });
 }
 
+// sends the .xlsx file as raw bytes
+export function uploadExcel(file) {
+  return request("/admin/excel", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/octet-stream",
+      "X-File-Name": file.name,
+      ...(session && { Authorization: `Bearer ${session.token}` }),
+    },
+    body: file,
+  });
+}
+
+// downloads the sample workbook (needs the login header, so not a plain link)
+export async function downloadSampleExcel() {
+  const res = await fetch(`${BASE}/admin/sample.xlsx`, {
+    headers: session ? { Authorization: `Bearer ${session.token}` } : {},
+  });
+  if (!res.ok) throw new Error("Could not download the sample");
+  const url = URL.createObjectURL(await res.blob());
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "sample-reviews.xlsx";
+  a.click();
+  URL.revokeObjectURL(url);
+}

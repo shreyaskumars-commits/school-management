@@ -1,5 +1,6 @@
 import { Review } from "../models/Review.js";
 import { SchoolReview } from "../models/SchoolReview.js";
+import { ExcelReview } from "../models/ExcelReview.js";
 import { getSettings } from "./settingsService.js";
 
 // RBAC for the chatbot: which reviews each role may read.
@@ -53,7 +54,7 @@ ${formatReviews(reviews)}`;
 }
 
 // V1: the original behaviour. V2: admin-edited prompt + temperature/max tokens,
-// reviews from the school DB.
+// reviews from the school DB or from the uploaded Excel rows.
 // Returns { content, options } where options go to the model call.
 export async function loadChatSetup(role) {
   const settings = await getSettings();
@@ -66,8 +67,9 @@ export async function loadChatSetup(role) {
     return { content: buildSystemPrompt(role, reviews), options: {} };
   }
 
+  const Source = settings.v2Source === "excel" ? ExcelReview : SchoolReview;
   const reviews = filter
-    ? await SchoolReview.find(filter).sort({ studentId: 1, date: 1 }).lean()
+    ? await Source.find(filter).sort({ studentId: 1, date: 1 }).lean()
     : [];
   const p = settings.prompts?.[role];
   if (!p) return { content: buildSystemPrompt(role, reviews), options: {} };

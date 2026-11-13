@@ -253,6 +253,8 @@ textarea:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
 .toggle-btn.on { background: var(--forest); color: var(--sand); }
 .toggle-btn:disabled { opacity: 0.5; cursor: default; }
 .toggle-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+.excel-box { margin-top: 6px; }
+.file-btn { cursor: pointer; display: inline-block; }
 @media (max-width: 600px) {
   .prompt-grid { grid-template-columns: 1fr; }
   .toggle-row { flex-direction: column; align-items: flex-start; gap: 6px; }

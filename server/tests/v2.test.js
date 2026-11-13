@@ -1,5 +1,6 @@
 import { after, before, describe, it } from "node:test";
 import assert from "node:assert/strict";
+import ExcelJS from "exceljs";
 
 // separate database: the real data is never touched
 process.env.MONGO_URI = "mongodb://localhost:27017/School_test";
@@ -10,6 +11,7 @@ const { connectDB } = await import("../src/config/db.js");
 const { seedUsers } = await import("../src/services/authService.js");
 const { seedSchoolReviews } = await import("../src/services/reviewSeed.js");
 const { SchoolReview } = await import("../src/models/SchoolReview.js");
+const { ExcelReview } = await import("../src/models/ExcelReview.js");
 const { Setting } = await import("../src/models/Setting.js");
 const { User } = await import("../src/models/User.js");
 const { llm } = await import("../src/services/llm.js");
@@ -38,11 +40,22 @@ async function login(userId, password) {
   return res.json();
 }
 
+async function makeXlsx(rows, header = [
+  "studentId", "studentName", "department", "year", "rating", "comment", "reviewedBy", "date", "confidential",
+]) {
+  const wb = new ExcelJS.Workbook();
+  const ws = wb.addWorksheet("Reviews");
+  ws.addRow(header);
+  rows.forEach((r) => ws.addRow(r));
+  return Buffer.from(await wb.xlsx.writeBuffer());
+}
+
 before(async () => {
   await connectDB();
   await User.deleteMany({});
   await seedUsers();
   await SchoolReview.deleteMany({});
+  await ExcelReview.deleteMany({});
   await Setting.deleteMany({});
   await seedSchoolReviews();
   server = app.listen(0);
@@ -141,3 +154,52 @@ describe("V2 > DB", () => {
   });
 });
 
+describe("V2 > Excel", () => {
+  it("rejects a non-xlsx body and bad rows", async () => {
+    const octet = { "content-type": "application/octet-stream" };
+    assert.equal((await call(admin, "POST", "/admin/excel", Buffer.from("nope"), octet)).status, 400);
+    const missing = await makeXlsx([], ["studentId", "comment"]);
+    const r1 = await call(admin, "POST", "/admin/excel", missing, octet);
+    assert.equal(r1.status, 400);
+    assert.match((await r1.json()).error, /Missing column/);
+    const badRow = await makeXlsx([[1, "Zed", "CSE", 2, 9, "ok", "teacher", "2026-10-01", false]]);
+    const r2 = await call(admin, "POST", "/admin/excel", badRow, octet);
+    assert.equal(r2.status, 400);
+    assert.match((await r2.json()).error, /row 2: invalid rating/);
+    assert.equal(await ExcelReview.countDocuments(), 0); // nothing half-imported
+  });
+  it("imports a valid file, then V2 > Excel reads it", async () => {
+    const file = await makeXlsx([
+      [41, "Excel Ella", "CSE", 2, 5, "Excellent in the excel-only file", "teacher", "2026-10-01", false],
+      [41, "Excel Ella", "CSE", 2, 2, "Secret excel note", "principal", new Date("2026-10-02T00:00:00Z"), "yes"],
+    ]);
+    const res = await call(admin, "POST", "/admin/excel", file, {
+      "content-type": "application/octet-stream", "x-file-name": "school.xlsx",
+    });
+    assert.equal(res.status, 200);
+    const cfg = await res.json();
+    assert.equal(cfg.excel.rows, 2);
+    assert.equal(cfg.excel.fileName, "school.xlsx");
+
+    await call(admin, "PUT", "/admin/config", { v2Source: "excel" });
+    const t = (await loadChatSetup("teacher")).content;
+    assert.match(t, /Excel Ella/);
+    assert.doesNotMatch(t, /Secret excel note/); // confidential still hidden from teachers
+    assert.doesNotMatch(t, /Karthik/); // school_review is not read in excel mode
+    assert.match((await loadChatSetup("principal")).content, /Secret excel note/);
+
+  });
+  it("a second upload replaces the first", async () => {
+    const file = await makeXlsx([[50, "Only Ollie", "IT", 1, 3, "single row", "teacher", "2026-10-03", false]]);
+    await call(admin, "POST", "/admin/excel", file, { "content-type": "application/octet-stream" });
+    assert.equal(await ExcelReview.countDocuments(), 1);
+  });
+  it("serves a sample workbook that can be uploaded back", async () => {
+    const res = await call(admin, "GET", "/admin/sample.xlsx");
+    assert.equal(res.status, 200);
+    const buf = Buffer.from(await res.arrayBuffer());
+    const up = await call(admin, "POST", "/admin/excel", buf, { "content-type": "application/octet-stream" });
+    assert.equal(up.status, 200);
+    assert.equal(await ExcelReview.countDocuments(), 24);
+  });
+});
