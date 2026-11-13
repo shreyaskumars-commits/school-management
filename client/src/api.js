@@ -113,7 +113,15 @@ export async function streamChat(message, onChunk, signal) {
   if (remaining) onChunk(remaining);
 }
 
-// ---- V2: admin ----
+// ---- V2: mode, remarks, admin ----
+
+export function getConfig() {
+  return request("/config");
+}
+
+export function addRemark(remark) {
+  return request("/remarks", { method: "POST", body: JSON.stringify(remark) });
+}
 
 export function getAdminConfig() {
   return request("/admin/config");

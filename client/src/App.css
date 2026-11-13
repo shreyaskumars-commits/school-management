@@ -228,7 +228,7 @@ tbody tr:hover { background: var(--sand); }
 }
 .chat-form input { flex: 1; min-width: 0; }
 
-/* ---- admin settings ---- */
+/* ---- admin settings + remarks ---- */
 textarea {
   padding: 8px 10px;
   border: 1px solid var(--line);
@@ -241,6 +241,7 @@ textarea {
 textarea:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
 .wide { grid-column: 1 / -1; }
 .prompt-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; align-items: end; }
+.remark-form { grid-template-columns: 1fr; }
 .hint { font-size: 0.85rem; opacity: 0.8; margin: 10px 0 0; }
 .hint code { background: var(--sand); padding: 1px 4px; border-radius: 4px; }
 .toggle-row { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }

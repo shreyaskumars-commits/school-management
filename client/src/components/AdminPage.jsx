@@ -152,6 +152,7 @@ export default function AdminPage() {
             {config.v2Source === "db" ? (
               <p className="hint">
                 Chat reads the <code>school_review</code> collection ({config.schoolRows} reviews).
+                Teachers can add remarks.
               </p>
             ) : (
               <div className="excel-box">
@@ -159,6 +160,7 @@ export default function AdminPage() {
                   {config.excel.rows > 0
                     ? `Using ${config.excel.rows} rows from ${config.excel.fileName ?? "an uploaded file"}.`
                     : "No file uploaded yet, so the chat has no review data."}
+                  {" "}Teachers cannot add remarks in Excel mode.
                 </p>
                 <div className="actions">
                   <label className="btn file-btn">

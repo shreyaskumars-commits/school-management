@@ -13,6 +13,7 @@ const { seedSchoolReviews } = await import("../src/services/reviewSeed.js");
 const { SchoolReview } = await import("../src/models/SchoolReview.js");
 const { ExcelReview } = await import("../src/models/ExcelReview.js");
 const { Setting } = await import("../src/models/Setting.js");
+const { Student } = await import("../src/models/Student.js");
 const { User } = await import("../src/models/User.js");
 const { llm } = await import("../src/services/llm.js");
 const { loadChatSetup } = await import("../src/services/chatContext.js");
@@ -57,6 +58,7 @@ before(async () => {
   await SchoolReview.deleteMany({});
   await ExcelReview.deleteMany({});
   await Setting.deleteMany({});
+  await Student.deleteMany({ name: "V2 Test Student" });
   await seedSchoolReviews();
   server = app.listen(0);
   BASE = `http://localhost:${server.address().port}`;
@@ -67,6 +69,7 @@ before(async () => {
 after(async () => {
   llm.startChatStream = realStart;
   await Setting.deleteMany({});
+  await Student.deleteMany({ name: "V2 Test Student" });
   process.exit(0);
 });
 
@@ -88,8 +91,9 @@ describe("admin access control", () => {
     assert.equal((await call(principal, "PUT", "/admin/config", {})).status, 403);
     assert.equal((await fetch(BASE + "/admin/config")).status, 401);
   });
-  it("the admin has no chat", async () => {
+  it("the admin has no chat and cannot add remarks", async () => {
     assert.equal((await call(admin, "POST", "/chat", { message: "hi" })).status, 403);
+    assert.equal((await call(admin, "POST", "/remarks", { studentId: 1, rating: 3, comment: "x" })).status, 403);
   });
 });
 
@@ -117,6 +121,10 @@ describe("config", () => {
     const cfg = await res.json();
     assert.equal(cfg.prompts.teacher.maxTokens, 123);
     assert.equal(cfg.prompts.principal.maxTokens, 500); // untouched
+  });
+  it("any logged-in user can read the mode, but nobody else can change it", async () => {
+    const v = await (await call(teacher, "GET", "/config")).json();
+    assert.deepEqual(v, { version: "v1", source: "legacy", remarksEnabled: false });
   });
 });
 
@@ -152,6 +160,28 @@ describe("V2 > DB", () => {
     assert.equal(await res.text(), "ok");
     assert.deepEqual(seen, { temperature: 1.1, maxTokens: 123 });
   });
+  it("a teacher can add a remark; it is open and reaches the prompt", async () => {
+    const st = await Student.create({ name: "V2 Test Student", department: "CSE", year: 2 });
+    const res = await call(teacher, "POST", "/remarks", { studentId: st.id, rating: 4, comment: "  Great effort in the viva  " });
+    assert.equal(res.status, 201);
+    const saved = await res.json();
+    assert.equal(saved.reviewedBy, "teacher");
+    assert.equal(saved.confidential, false);
+    assert.equal(saved.comment, "Great effort in the viva");
+    assert.match((await loadChatSetup("teacher")).content, /Great effort in the viva/);
+    await SchoolReview.deleteMany({ studentId: st.id });
+  });
+  it("validates remarks", async () => {
+    const post = (b) => call(teacher, "POST", "/remarks", b);
+    assert.equal((await post({ studentId: 1, rating: 9, comment: "x" })).status, 400);
+    assert.equal((await post({ studentId: 1, rating: 3, comment: "   " })).status, 400);
+    assert.equal((await post({ studentId: "1", rating: 3, comment: "x" })).status, 400);
+    assert.equal((await post({ studentId: 999999, rating: 3, comment: "x" })).status, 404);
+  });
+  it("reports remarks as enabled", async () => {
+    const v = await (await call(teacher, "GET", "/config")).json();
+    assert.deepEqual(v, { version: "v2", source: "db", remarksEnabled: true });
+  });
 });
 
 describe("V2 > Excel", () => {
@@ -168,7 +198,7 @@ describe("V2 > Excel", () => {
     assert.match((await r2.json()).error, /row 2: invalid rating/);
     assert.equal(await ExcelReview.countDocuments(), 0); // nothing half-imported
   });
-  it("imports a valid file, then V2 > Excel reads it", async () => {
+  it("imports a valid file, then V2 > Excel reads it and disables remarks", async () => {
     const file = await makeXlsx([
       [41, "Excel Ella", "CSE", 2, 5, "Excellent in the excel-only file", "teacher", "2026-10-01", false],
       [41, "Excel Ella", "CSE", 2, 2, "Secret excel note", "principal", new Date("2026-10-02T00:00:00Z"), "yes"],
@@ -188,6 +218,8 @@ describe("V2 > Excel", () => {
     assert.doesNotMatch(t, /Karthik/); // school_review is not read in excel mode
     assert.match((await loadChatSetup("principal")).content, /Secret excel note/);
 
+    const rem = await call(teacher, "POST", "/remarks", { studentId: 1, rating: 3, comment: "x" });
+    assert.equal(rem.status, 409);
   });
   it("a second upload replaces the first", async () => {
     const file = await makeXlsx([[50, "Only Ollie", "IT", 1, 3, "single row", "teacher", "2026-10-03", false]]);

@@ -37,6 +37,7 @@ export function publicView(s) {
   return {
     version: s.version,
     source: s.version === "v2" ? s.v2Source : "legacy",
+    remarksEnabled: s.version === "v2" && s.v2Source === "db",
   };
 }
 

@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as api from "../src/api.js";
+import App from "../src/App.jsx";
 import AdminPage from "../src/components/AdminPage.jsx";
 
 vi.mock("../src/api.js");
@@ -14,6 +15,7 @@ const CONFIG = {
   excel: { fileName: null, uploadedAt: null, rows: 0 },
   schoolRows: 24,
 };
+const ASHA = { id: 101, name: "Asha", department: "CSE", year: 2 };
 
 beforeEach(() => {
   vi.resetAllMocks();
@@ -75,3 +77,35 @@ describe("AdminPage", () => {
   });
 });
 
+describe("teacher remark button", () => {
+  beforeEach(() => api.getStudents.mockResolvedValue({ total: 1, data: [ASHA] }));
+
+  it("is disabled when remarks are off", async () => {
+    api.getConfig.mockResolvedValue({ version: "v2", source: "excel", remarksEnabled: false });
+    render(<App role="teacher" />);
+    await screen.findByText("Asha");
+    expect(screen.getByRole("button", { name: "Add remark" })).toBeDisabled();
+  });
+
+  it("adds a remark when V2 is connected to the DB", async () => {
+    api.getConfig.mockResolvedValue({ version: "v2", source: "db", remarksEnabled: true });
+    api.addRemark.mockResolvedValue({});
+    render(<App role="teacher" />);
+    await screen.findByText("Asha");
+    const button = screen.getByRole("button", { name: "Add remark" });
+    await waitFor(() => expect(button).toBeEnabled());
+    await userEvent.click(button);
+    await userEvent.type(screen.getByLabelText("Remark"), "Great viva");
+    await userEvent.click(screen.getByRole("button", { name: "Save remark" }));
+    await waitFor(() =>
+      expect(api.addRemark).toHaveBeenCalledWith({ studentId: 101, rating: 3, comment: "Great viva" }),
+    );
+    expect(await screen.findByText("Remark added")).toBeInTheDocument();
+  });
+
+  it("principal has no remark button", async () => {
+    render(<App role="principal" />);
+    await screen.findByText("Asha");
+    expect(screen.queryByRole("button", { name: "Add remark" })).not.toBeInTheDocument();
+  });
+});
