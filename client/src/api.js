@@ -64,3 +64,52 @@ export function updateStudent(id, changes) {
 export function deleteStudent(id) {
   return request(`/students/${id}`, { method: "DELETE" });
 }
+
+// ---- chatbot ----
+
+export function getChatHistory() {
+  return request("/chat/history");
+}
+
+export function clearChatHistory() {
+  return request("/chat/history", { method: "DELETE" });
+}
+
+// Sends one message and calls onChunk(text) for every piece of the reply as it
+// arrives. fetch is used because axios waits for the whole response.
+export async function streamChat(message, onChunk, signal) {
+  const res = await fetch(`${BASE}/chat`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(session && { Authorization: `Bearer ${session.token}` }),
+    },
+    body: JSON.stringify({ message }),
+    signal,
+  });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.error ?? "Request failed");
+  }
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+
+    const chunk = decoder.decode(value, { stream: true });
+
+    // Remove Markdown bold markers
+    const cleanedChunk = chunk.replace(/\*\*/g, "");
+
+    onChunk(cleanedChunk);
+  }
+
+  // Flush any remaining decoded characters
+  const remaining = decoder.decode();
+  if (remaining) onChunk(remaining);
+}
+

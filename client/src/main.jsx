@@ -18,6 +18,7 @@ function Root() {
   return (
     <App
       userId={session.userId}
+      role={session.role}
       canDelete={session.role === "principal"}
       onLogout={handleLogout}
     />

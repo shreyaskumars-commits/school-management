@@ -3,8 +3,9 @@ import useStudents from "./hooks/useStudents.js";
 import StudentForm from "./components/StudentForm.jsx";
 import StudentTable from "./components/StudentTable.jsx";
 import Pager from "./components/Pager.jsx";
+import ChatWidget from "./components/ChatWidget.jsx";
 
-export default function App({ userId, canDelete = true, onLogout }) {
+export default function App({ userId, role, canDelete = true, onLogout }) {
   const list = useStudents();
   const [editing, setEditing] = useState(null);
 
@@ -78,6 +79,8 @@ export default function App({ userId, canDelete = true, onLogout }) {
           />
         </section>
       </main>
+
+      {role && <ChatWidget role={role} />}
     </>
   );
 }

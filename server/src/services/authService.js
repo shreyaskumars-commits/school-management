@@ -27,7 +27,7 @@ export async function login(userId, password) {
     return null;
   }
   const token = randomBytes(24).toString("hex");
-  sessions.set(token, { userId: user.Username, role: user.role });
+  sessions.set(token, { userId: user.Username, role: user.role, id: String(user._id) });
   return { token, userId: user.Username, role: user.role };
 }
 
