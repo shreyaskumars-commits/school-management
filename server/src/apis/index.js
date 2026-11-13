@@ -3,6 +3,7 @@ import authApi from "./authApi.js";
 import studentApi from "./studentApi.js";
 import classroomApi from "./classroomApi.js";
 import chatApi from "./chatApi.js";
+import adminApi from "./adminApi.js";
 
 const router = Router();
 
@@ -13,5 +14,6 @@ router.use(authApi);
 router.use("/students", studentApi);
 router.use("/classroom", classroomApi);
 router.use("/chat", chatApi);
+router.use("/admin", adminApi);
 
 export default router;

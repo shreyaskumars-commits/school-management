@@ -1,0 +1,49 @@
+{
+  "students": [
+    { "studentId": 1,  "name": "Asha",    "department": "CSE",   "year": 2 },
+    { "studentId": 2,  "name": "Ravi",    "department": "CSE",   "year": 3 },
+    { "studentId": 3,  "name": "Meera",   "department": "ECE",   "year": 1 },
+    { "studentId": 4,  "name": "John",    "department": "MECH",  "year": 4 },
+    { "studentId": 5,  "name": "Zoya",    "department": "IT",    "year": 2 },
+    { "studentId": 6,  "name": "Karthik", "department": "EEE",   "year": 3 },
+    { "studentId": 7,  "name": "Priya",   "department": "CIVIL", "year": 2 },
+    { "studentId": 8,  "name": "Arjun",   "department": "IT",    "year": 4 },
+    { "studentId": 9,  "name": "Sneha",   "department": "ECE",   "year": 3 },
+    { "studentId": 10, "name": "Imran",   "department": "MECH",  "year": 1 }
+  ],
+  "reviews": [
+    { "studentId": 1, "rating": 5, "comment": "Top of the class in Data Structures; helps classmates during labs.", "reviewedBy": "teacher", "date": "2026-08-12", "confidential": false },
+    { "studentId": 1, "rating": 4, "comment": "Strong project work, sometimes submits assignments a day late.", "reviewedBy": "teacher", "date": "2026-09-03", "confidential": false },
+    { "studentId": 1, "rating": 5, "comment": "Nominated for the department scholarship.", "reviewedBy": "principal", "date": "2026-09-20", "confidential": true },
+
+    { "studentId": 2, "rating": 4, "comment": "Excellent presentation in the Operating Systems seminar.", "reviewedBy": "teacher", "date": "2026-08-18", "confidential": false },
+    { "studentId": 2, "rating": 2, "comment": "Attendance dropped below 70% this month; missed two internal tests.", "reviewedBy": "teacher", "date": "2026-09-14", "confidential": false },
+    { "studentId": 2, "rating": 2, "comment": "Parents informed about attendance; a family health issue was shared in confidence.", "reviewedBy": "principal", "date": "2026-09-25", "confidential": true },
+
+    { "studentId": 3, "rating": 3, "comment": "Still settling into first year; quiet in class but scores well in written tests.", "reviewedBy": "teacher", "date": "2026-08-25", "confidential": false },
+    { "studentId": 3, "rating": 4, "comment": "Joined the robotics club and contributed to the line-follower build.", "reviewedBy": "teacher", "date": "2026-10-02", "confidential": false },
+
+    { "studentId": 4, "rating": 3, "comment": "Final-year project is on schedule but the report needs better structure.", "reviewedBy": "teacher", "date": "2026-09-05", "confidential": false },
+    { "studentId": 4, "rating": 4, "comment": "Received an internship offer from a manufacturing firm.", "reviewedBy": "principal", "date": "2026-10-10", "confidential": false },
+    { "studentId": 4, "rating": 2, "comment": "Disciplinary warning for a lab safety violation; no further action needed.", "reviewedBy": "principal", "date": "2026-10-15", "confidential": true },
+
+    { "studentId": 5, "rating": 5, "comment": "Won the inter-college coding contest; very consistent in assignments.", "reviewedBy": "teacher", "date": "2026-08-30", "confidential": false },
+    { "studentId": 5, "rating": 4, "comment": "Mentors two first-year students voluntarily.", "reviewedBy": "teacher", "date": "2026-10-08", "confidential": false },
+
+    { "studentId": 6, "rating": 3, "comment": "Good grasp of circuit theory but the practical record is often incomplete.", "reviewedBy": "teacher", "date": "2026-09-09", "confidential": false },
+
+    { "studentId": 7, "rating": 4, "comment": "Leads the site-survey group; accurate and punctual.", "reviewedBy": "teacher", "date": "2026-09-12", "confidential": false },
+    { "studentId": 7, "rating": 5, "comment": "Outstanding structural design submission, best in the batch.", "reviewedBy": "teacher", "date": "2026-10-05", "confidential": false },
+
+    { "studentId": 8, "rating": 4, "comment": "Solid placement preparation; cleared the first round at two companies.", "reviewedBy": "teacher", "date": "2026-09-18", "confidential": false },
+    { "studentId": 8, "rating": 3, "comment": "Capstone demo had gaps in testing; asked to resubmit.", "reviewedBy": "teacher", "date": "2026-10-11", "confidential": false },
+    { "studentId": 8, "rating": 3, "comment": "Counselling session held for placement anxiety; follow-up planned in November.", "reviewedBy": "principal", "date": "2026-10-20", "confidential": true },
+
+    { "studentId": 9, "rating": 5, "comment": "Published a short paper on antenna design with the faculty guide.", "reviewedBy": "principal", "date": "2026-09-22", "confidential": false },
+    { "studentId": 9, "rating": 4, "comment": "Reliable lab partner and well prepared for viva.", "reviewedBy": "teacher", "date": "2026-10-13", "confidential": false },
+
+    { "studentId": 10, "rating": 2, "comment": "Struggling with engineering drawing; has been late to several classes.", "reviewedBy": "teacher", "date": "2026-09-01", "confidential": false },
+    { "studentId": 10, "rating": 3, "comment": "Attending extra tutorial sessions; small improvement in the latest quiz.", "reviewedBy": "teacher", "date": "2026-10-16", "confidential": false },
+    { "studentId": 10, "rating": 2, "comment": "Fee payment delayed due to financial hardship; scholarship application in progress.", "reviewedBy": "principal", "date": "2026-10-18", "confidential": true }
+  ]
+}

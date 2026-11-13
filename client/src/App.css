@@ -228,3 +228,32 @@ tbody tr:hover { background: var(--sand); }
 }
 .chat-form input { flex: 1; min-width: 0; }
 
+/* ---- admin settings ---- */
+textarea {
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--forest);
+  font: inherit;
+  resize: vertical;
+}
+textarea:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+.wide { grid-column: 1 / -1; }
+.prompt-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; align-items: end; }
+.hint { font-size: 0.85rem; opacity: 0.8; margin: 10px 0 0; }
+.hint code { background: var(--sand); padding: 1px 4px; border-radius: 4px; }
+.toggle-row { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+.toggle-label { width: 90px; font-size: 0.85rem; font-weight: 600; }
+.toggle { display: inline-flex; border: 1px solid var(--forest); border-radius: 999px; overflow: hidden; }
+.toggle-btn {
+  padding: 6px 16px; border: 0; background: transparent; color: var(--forest);
+  font: inherit; font-size: 0.9rem; cursor: pointer;
+}
+.toggle-btn.on { background: var(--forest); color: var(--sand); }
+.toggle-btn:disabled { opacity: 0.5; cursor: default; }
+.toggle-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+@media (max-width: 600px) {
+  .prompt-grid { grid-template-columns: 1fr; }
+  .toggle-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+}

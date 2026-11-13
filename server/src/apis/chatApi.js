@@ -5,7 +5,12 @@ import { chatLimiter } from "../middlewares/chatLimiter.js";
 
 const router = Router();
 
-router.use(requireLogin);
+router.use(requireLogin, (req, res, next) => {
+  if (req.user.role === "admin") {
+    return res.status(403).json({ error: "The admin has no chat" });
+  }
+  next();
+});
 
 router.get("/history", controller.getHistory);
 router.delete("/history", controller.clearHistory);

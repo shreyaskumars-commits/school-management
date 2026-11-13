@@ -1,6 +1,7 @@
 import { StrictMode, useState } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
+import AdminApp from "./components/AdminApp.jsx";
 import LoginPage from "./components/LoginPage.jsx";
 import { getSession, logout } from "./api.js";
 import "./App.css";
@@ -15,6 +16,9 @@ function Root() {
   }
 
   if (!session) return <LoginPage onLogin={setSession} />;
+  if (session.role === "admin") {
+    return <AdminApp userId={session.userId} onLogout={handleLogout} />;
+  }
   return (
     <App
       userId={session.userId}

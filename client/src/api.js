@@ -113,3 +113,14 @@ export async function streamChat(message, onChunk, signal) {
   if (remaining) onChunk(remaining);
 }
 
+// ---- V2: admin ----
+
+export function getAdminConfig() {
+  return request("/admin/config");
+}
+
+// body can hold version and/or prompts
+export function saveAdminConfig(changes) {
+  return request("/admin/config", { method: "PUT", body: JSON.stringify(changes) });
+}
+

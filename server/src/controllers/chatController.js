@@ -1,6 +1,6 @@
 import { Conversation } from "../models/Conversation.js";
 import { llm, trimHistory, toFriendlyError } from "../services/llm.js";
-import { loadSystemPrompt } from "../services/chatContext.js";
+import { loadChatSetup } from "../services/chatContext.js";
 import { CHAT_MAX_CHARS, CHAT_HISTORY_TOKENS } from "../config/index.js";
 
 export async function getHistory(req, res) {
@@ -27,8 +27,9 @@ export async function sendMessage(req, res) {
 
   // the role comes from the login session, never from the request body
   const history = trimHistory(convo.messages, { maxTokens: CHAT_HISTORY_TOKENS });
+  const setup = await loadChatSetup(req.user.role);
   const messages = [
-    { role: "system", content: await loadSystemPrompt(req.user.role) },
+    { role: "system", content: setup.content },
     ...history.map((m) => ({ role: m.role, content: m.content })),
     { role: "user", content: text },
   ];
@@ -41,7 +42,7 @@ export async function sendMessage(req, res) {
 
   let reply = "";
   try {
-    const stream = await llm.startChatStream(messages, controller.signal);
+    const stream = await llm.startChatStream(messages, controller.signal, setup.options);
     res.status(200);
     res.setHeader("Content-Type", "text/plain; charset=utf-8");
     res.setHeader("Cache-Control", "no-cache");

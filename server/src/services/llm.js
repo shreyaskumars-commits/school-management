@@ -19,9 +19,13 @@ function getClient() {
 
 
 export const llm = {
-  startChatStream(messages, signal) {
+  // options (V2 only): { temperature, maxTokens } set by the admin
+  startChatStream(messages, signal, options = {}) {
+    const params = { model: LLM_MODEL(), messages, stream: true };
+    if (options.temperature != null) params.temperature = options.temperature;
+    if (options.maxTokens != null) params.max_completion_tokens = options.maxTokens;
     return getClient().chat.completions.create(
-      { model: LLM_MODEL(), messages, stream: true },
+      params,
       { signal } // request options go in the SECOND argument
     );
   },
