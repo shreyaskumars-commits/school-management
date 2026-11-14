@@ -7,14 +7,13 @@ export const COLUMNS = [
   "rating", "comment", "reviewedBy", "date", "confidential",
 ];
 
-// header names the admin may use -> our field names
 const ALIASES = { name: "studentName", student: "studentName", id: "studentId" };
 
 function cellValue(cell) {
   const v = cell.value;
   if (v && typeof v === "object" && !(v instanceof Date)) {
-    if ("result" in v) return v.result; // formula
-    if ("text" in v) return v.text; // hyperlink
+    if ("result" in v) return v.result;
+    if ("text" in v) return v.text;
     if (Array.isArray(v.richText)) return v.richText.map((t) => t.text).join("");
   }
   return v;
@@ -31,8 +30,6 @@ const toBool = (v) => {
   return ["true", "yes", "y", "1"].includes(String(v ?? "").trim().toLowerCase());
 };
 
-// parses an .xlsx buffer into review documents.
-// Throws an Error (with .status 400) listing up to 5 problems.
 export async function parseWorkbook(buffer) {
   const wb = new ExcelJS.Workbook();
   try {
@@ -64,7 +61,7 @@ export async function parseWorkbook(buffer) {
   sheet.eachRow((row, n) => {
     if (n === 1) return;
     const get = (k) => (columnOf[k] ? cellValue(row.getCell(columnOf[k])) : undefined);
-    if (required.every((k) => get(k) == null || get(k) === "")) return; // blank row
+    if (required.every((k) => get(k) == null || get(k) === "")) return;
 
     const doc = {
       studentId: Number(get("studentId")),
@@ -99,13 +96,11 @@ export async function parseWorkbook(buffer) {
   return rows;
 }
 
-// replaces everything in excel_review with the parsed rows
 export async function replaceExcelReviews(rows) {
   await ExcelReview.deleteMany({});
   await ExcelReview.insertMany(rows);
 }
 
-// builds a sample .xlsx from the 10-student mock data
 export async function buildSampleWorkbook() {
   const wb = new ExcelJS.Workbook();
   const sheet = wb.addWorksheet("Reviews");

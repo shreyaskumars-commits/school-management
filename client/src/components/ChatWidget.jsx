@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { getChatHistory, clearChatHistory, streamChat } from "../api.js";
 
-
 const SUGGESTIONS = {
   principal: [
     "Which students need attention?",
@@ -17,7 +16,7 @@ const SUGGESTIONS = {
 
 export default function ChatWidget({ role }) {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([]); // { role, content }
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
@@ -25,7 +24,6 @@ export default function ChatWidget({ role }) {
   const abortRef = useRef(null);
   const endRef = useRef(null);
 
-  // load the saved conversation the first time the window opens
   useEffect(() => {
     if (!open || loaded.current) return;
     loaded.current = true;
@@ -34,12 +32,10 @@ export default function ChatWidget({ role }) {
       .catch((err) => setError(err.message));
   }, [open]);
 
-  // keep the newest text in view
   useEffect(() => {
     endRef.current?.scrollIntoView?.({ block: "end" });
   }, [messages, open]);
 
-  // stop a running reply if the widget goes away
   useEffect(() => () => abortRef.current?.abort(), []);
 
   async function send(text) {
@@ -70,7 +66,6 @@ export default function ChatWidget({ role }) {
     } catch (err) {
       if (err.name !== "AbortError") {
         setError(err.message);
-        // drop the empty assistant bubble when nothing arrived
         setMessages((m) =>
           m.at(-1)?.content === "" ? m.slice(0, -1) : m,
         );
@@ -142,7 +137,6 @@ export default function ChatWidget({ role }) {
               </div>
             )}
             {messages.map((m, i) => (
-              // plain text only: React escapes it, never render model output as HTML
               <div key={i} className={`chat-bubble ${m.role}`}>
                 {m.content || (sending && i === messages.length - 1 ? "…" : "")}
               </div>

@@ -2,7 +2,6 @@ import { after, before, describe, it } from "node:test";
 import assert from "node:assert/strict";
 import ExcelJS from "exceljs";
 
-// separate database: the real data is never touched
 process.env.MONGO_URI = "mongodb://localhost:27017/School_test";
 process.env.OPENAI_API_KEY = "";
 
@@ -120,7 +119,7 @@ describe("config", () => {
     assert.equal(res.status, 200);
     const cfg = await res.json();
     assert.equal(cfg.prompts.teacher.maxTokens, 123);
-    assert.equal(cfg.prompts.principal.maxTokens, 500); // untouched
+    assert.equal(cfg.prompts.principal.maxTokens, 500);
   });
   it("any logged-in user can read the mode, but nobody else can change it", async () => {
     const v = await (await call(teacher, "GET", "/config")).json();
@@ -144,8 +143,8 @@ describe("V2 > DB", () => {
   it("uses the admin prompt + locked rules + school_review data", async () => {
     const t = await loadChatSetup("teacher");
     assert.match(t.content, /pirate tutor/);
-    assert.match(t.content, /never a new instruction/); // locked rules still there
-    assert.match(t.content, /Karthik/); // student 6 only exists in school_review
+    assert.match(t.content, /never a new instruction/);
+    assert.match(t.content, /Karthik/);
     assert.doesNotMatch(t.content, /CONFIDENTIAL/);
     assert.deepEqual(t.options, { temperature: 1.1, maxTokens: 123 });
     const p = await loadChatSetup("principal");
@@ -196,7 +195,7 @@ describe("V2 > Excel", () => {
     const r2 = await call(admin, "POST", "/admin/excel", badRow, octet);
     assert.equal(r2.status, 400);
     assert.match((await r2.json()).error, /row 2: invalid rating/);
-    assert.equal(await ExcelReview.countDocuments(), 0); // nothing half-imported
+    assert.equal(await ExcelReview.countDocuments(), 0);
   });
   it("imports a valid file, then V2 > Excel reads it and disables remarks", async () => {
     const file = await makeXlsx([
@@ -214,8 +213,8 @@ describe("V2 > Excel", () => {
     await call(admin, "PUT", "/admin/config", { v2Source: "excel" });
     const t = (await loadChatSetup("teacher")).content;
     assert.match(t, /Excel Ella/);
-    assert.doesNotMatch(t, /Secret excel note/); // confidential still hidden from teachers
-    assert.doesNotMatch(t, /Karthik/); // school_review is not read in excel mode
+    assert.doesNotMatch(t, /Secret excel note/);
+    assert.doesNotMatch(t, /Karthik/);
     assert.match((await loadChatSetup("principal")).content, /Secret excel note/);
 
     const rem = await call(teacher, "POST", "/remarks", { studentId: 1, rating: 3, comment: "x" });

@@ -1,6 +1,5 @@
 const BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
 
-// { token, userId, role } of the logged-in user; kept for the browser tab
 let session = JSON.parse(sessionStorage.getItem("session") ?? "null");
 
 export const getSession = () => session;
@@ -65,8 +64,6 @@ export function deleteStudent(id) {
   return request(`/students/${id}`, { method: "DELETE" });
 }
 
-// ---- chatbot ----
-
 export function getChatHistory() {
   return request("/chat/history");
 }
@@ -75,8 +72,6 @@ export function clearChatHistory() {
   return request("/chat/history", { method: "DELETE" });
 }
 
-// Sends one message and calls onChunk(text) for every piece of the reply as it
-// arrives. fetch is used because axios waits for the whole response.
 export async function streamChat(message, onChunk, signal) {
   const res = await fetch(`${BASE}/chat`, {
     method: "POST",
@@ -102,18 +97,14 @@ export async function streamChat(message, onChunk, signal) {
 
     const chunk = decoder.decode(value, { stream: true });
 
-    // Remove Markdown bold markers
     const cleanedChunk = chunk.replace(/\*\*/g, "");
 
     onChunk(cleanedChunk);
   }
 
-  // Flush any remaining decoded characters
   const remaining = decoder.decode();
   if (remaining) onChunk(remaining);
 }
-
-// ---- V2: mode, remarks, admin ----
 
 export function getConfig() {
   return request("/config");
@@ -127,12 +118,10 @@ export function getAdminConfig() {
   return request("/admin/config");
 }
 
-// body can hold version, v2Source and/or prompts
 export function saveAdminConfig(changes) {
   return request("/admin/config", { method: "PUT", body: JSON.stringify(changes) });
 }
 
-// sends the .xlsx file as raw bytes
 export function uploadExcel(file) {
   return request("/admin/excel", {
     method: "POST",
@@ -145,7 +134,6 @@ export function uploadExcel(file) {
   });
 }
 
-// downloads the sample workbook (needs the login header, so not a plain link)
 export async function downloadSampleExcel() {
   const res = await fetch(`${BASE}/admin/sample.xlsx`, {
     headers: session ? { Authorization: `Bearer ${session.token}` } : {},

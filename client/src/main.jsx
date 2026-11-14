@@ -6,12 +6,11 @@ import LoginPage from "./components/LoginPage.jsx";
 import { getSession, logout } from "./api.js";
 import "./App.css";
 
-// shows the login page until someone logs in; the role decides what App allows
 function Root() {
   const [session, setSession] = useState(getSession);
 
   async function handleLogout() {
-    await logout().catch(() => {}); // the local session is cleared either way
+    await logout().catch(() => {});
     setSession(null);
   }
 

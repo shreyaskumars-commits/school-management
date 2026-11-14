@@ -14,8 +14,6 @@ export default function App({ userId, role, canDelete = true, onLogout }) {
   const [remarksEnabled, setRemarksEnabled] = useState(false);
   const canRemark = role === "teacher";
 
-  // remarks only work when V2 is connected to the school DB; the admin can
-  // change that at any time, so look again whenever the tab regains focus
   useEffect(() => {
     if (!canRemark) return;
     const refresh = () =>

@@ -57,7 +57,7 @@ describe("AdminPage", () => {
     api.saveAdminConfig.mockResolvedValue(CONFIG);
     render(<AdminPage />);
     const save = await screen.findByRole("button", { name: "Save prompts" });
-    expect(save).toBeDisabled(); // nothing changed yet
+    expect(save).toBeDisabled();
     const tokens = screen.getByLabelText("teacher max tokens");
     await userEvent.clear(tokens);
     await userEvent.type(tokens, "250");

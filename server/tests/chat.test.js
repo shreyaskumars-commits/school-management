@@ -2,9 +2,8 @@ import { after, before, describe, it } from "node:test";
 import assert from "node:assert/strict";
 import OpenAI from "openai";
 
-// use a separate database so the real data is never touched
 process.env.MONGO_URI = "mongodb://localhost:27017/School_test";
-process.env.OPENAI_API_KEY = ""; // the real model is never called: tests use a fake
+process.env.OPENAI_API_KEY = "";
 
 const { default: app } = await import("../src/app.js");
 const { connectDB } = await import("../src/config/db.js");
@@ -21,9 +20,8 @@ let server;
 let BASE;
 let principalToken;
 let teacherToken;
-let seenMessages; // what the fake model received on the last call
+let seenMessages;
 
-// a fake model: streams the given pieces, in the shape the OpenAI SDK gives
 function fakeModel(pieces, { failAfter = false } = {}) {
   llm.startChatStream = async (messages) => {
     seenMessages = messages;
@@ -102,7 +100,7 @@ describe("role-based context", () => {
     assert.match(principal, /discipline committee/);
     assert.doesNotMatch(teacher, /CONFIDENTIAL/);
     assert.doesNotMatch(teacher, /discipline committee/);
-    assert.match(teacher, /Data Structures/); // non-confidential data is there
+    assert.match(teacher, /Data Structures/);
   });
   it("an unknown role gets no data", async () => {
     assert.equal(reviewFilterFor("student"), null);
@@ -133,7 +131,6 @@ describe("POST /chat and GET /chat/history", () => {
       ["user", "How is Asha?"],
       ["assistant", "Asha is doing well."],
     ]);
-    // the model got: system prompt first, user text last
     assert.equal(seenMessages[0].role, "system");
     assert.equal(seenMessages.at(-1).content, "How is Asha?");
   });
@@ -177,7 +174,7 @@ describe("POST /chat and GET /chat/history", () => {
   });
 
   it("explains a missing API key without leaking details", async () => {
-    llm.startChatStream = realStartChatStream; // the real one, with no key set
+    llm.startChatStream = realStartChatStream;
     const res = await send(principalToken, "hello");
     assert.equal(res.status, 500);
     assert.deepEqual(await res.json(), { error: "AI is not configured correctly." });
@@ -211,7 +208,6 @@ describe("POST /chat and GET /chat/history", () => {
     for (let i = 0; i < 12; i++) statuses.push((await send(teacherToken, `m${i}`)).status);
     assert.equal(statuses[0], 200);
     assert.ok(statuses.includes(429));
-    // the principal is not affected by the teacher's limit
     const res = await fetch(BASE + "/chat/history", { headers: { authorization: `Bearer ${principalToken}` } });
     assert.equal(res.status, 200);
   });

@@ -5,7 +5,6 @@ import {
 
 const ROLES = ["principal", "teacher"];
 
-// two-option toggle: the pressed button is the active one
 function Toggle({ label, value, options, onChange, disabled }) {
   return (
     <div className="toggle-row">
@@ -68,7 +67,7 @@ function PromptEditor({ role, value, onChange }) {
 
 export default function AdminPage() {
   const [config, setConfig] = useState(null);
-  const [prompts, setPrompts] = useState(null); // edited copy, saved with the button
+  const [prompts, setPrompts] = useState(null);
   const [message, setMessage] = useState({ text: "", isError: false });
   const [busy, setBusy] = useState(false);
 
@@ -104,7 +103,7 @@ export default function AdminPage() {
 
   async function handleFile(e) {
     const file = e.target.files[0];
-    e.target.value = ""; // allows choosing the same file again
+    e.target.value = "";
     if (file) await run(() => uploadExcel(file), `Imported ${file.name}`);
   }
 

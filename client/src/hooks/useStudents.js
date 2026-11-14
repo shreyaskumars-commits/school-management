@@ -9,13 +9,12 @@ import useDebounce from "./useDebounce.js";
 
 const LIMIT = 5;
 
-// owns the list, filter, paging and every call to the API
 export default function useStudents() {
   const [students, setStudents] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [department, setDepartment] = useState("");
-  const [message, setMessage] = useState(null); // { text, isError }
+  const [message, setMessage] = useState(null);
   const [reloadKey, setReloadKey] = useState(0);
 
   const wanted = useDebounce(department.trim());
@@ -28,7 +27,7 @@ export default function useStudents() {
         if (ignore) return;
         const pages = Math.max(1, Math.ceil(result.total / LIMIT));
         if (page > pages) {
-          setPage(pages); // e.g. the last row of the last page was deleted
+          setPage(pages);
           return;
         }
         setStudents(result.data);
@@ -47,7 +46,6 @@ export default function useStudents() {
     setPage(1);
   }, []);
 
-  // runs an API call, reports the outcome, refreshes the list; true if it worked
   async function run(action, successText) {
     try {
       await action();

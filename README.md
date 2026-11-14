@@ -78,6 +78,31 @@ npm run dev -- --port 5175      # any other port: the browser blocks it (see the
 
 Insomnia, Postman and curl are not browsers, so they never show a CORS error.
 
+## AI chatbot (CollegeBuddy)
+
+After login, principals and teachers get a chat bubble that answers questions
+about student reviews. The principal sees all reviews; a teacher never sees the
+confidential ones (filtered in the database query, not in the prompt). An admin
+account manages prompts, model settings and the data source and has no chat.
+
+- **V1:** answers from a small JSON seed (5 students, 3 reviews each).
+- **V2:** school reviews from MongoDB or an uploaded Excel file, editable
+  prompts and temperature, and a teacher remark form.
+
+Setup (needs MongoDB and an OpenAI key):
+
+```bash
+cd server
+cp .env.example .env     # set OPENAI_API_KEY and LLM_MODEL
+npm install
+npm start                # http://localhost:3000
+```
+
+Demo logins: `principal/principal123`, `teacher/teacher123`, `admin/admin123`.
+Without a key the chat returns "AI is not configured correctly." and the rest
+of the portal still works. See `PROJECT_SUMMARY.md` for the design, data flow
+and API reference.
+
 ## Files
 
 | Path | Purpose |

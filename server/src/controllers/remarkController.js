@@ -2,12 +2,10 @@ import { SchoolReview } from "../models/SchoolReview.js";
 import { Student } from "../models/Student.js";
 import { getSettings, publicView } from "../services/settingsService.js";
 
-// GET /config: what the portal needs to know about the current mode
 export async function publicConfig(req, res) {
   res.json(publicView(await getSettings()));
 }
 
-// POST /remarks: a teacher (or principal) adds a review to the school DB
 export async function addRemark(req, res) {
   const settings = await getSettings();
   if (!publicView(settings).remarksEnabled) {
@@ -40,7 +38,6 @@ export async function addRemark(req, res) {
     comment: text,
     reviewedBy: req.user.role,
     date: new Date().toISOString().slice(0, 10),
-    // teachers cannot read confidential reviews, so their remarks are always open
     confidential: false,
   });
   res.status(201).json(review.toJSON());

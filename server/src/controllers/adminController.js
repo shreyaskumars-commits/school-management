@@ -35,12 +35,11 @@ export async function putConfig(req, res) {
   res.json(await fullView());
 }
 
-// body is the raw .xlsx bytes (express.raw); the file name comes in a header
 export async function uploadExcel(req, res) {
   if (!Buffer.isBuffer(req.body) || req.body.length === 0) {
     return res.status(400).json({ error: "Send the .xlsx file as the request body" });
   }
-  const rows = await parseWorkbook(req.body); // throws 400 with a readable message
+  const rows = await parseWorkbook(req.body);
   await replaceExcelReviews(rows);
   const fileName = String(req.get("x-file-name") ?? "upload.xlsx").slice(0, 120);
   await Setting.updateOne(

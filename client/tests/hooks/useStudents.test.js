@@ -77,8 +77,8 @@ describe("useStudents", () => {
 
   it("goes back a page when the current page no longer exists", async () => {
     api.getStudents
-      .mockResolvedValueOnce({ total: 6, data: [ASHA] }) // page 1
-      .mockResolvedValueOnce({ total: 5, data: [] }) // page 2 is now gone
+      .mockResolvedValueOnce({ total: 6, data: [ASHA] })
+      .mockResolvedValueOnce({ total: 5, data: [] })
       .mockResolvedValue({ total: 5, data: [ASHA] });
     const { result } = renderHook(() => useStudents());
     await waitFor(() => expect(result.current.totalPages).toBe(2));

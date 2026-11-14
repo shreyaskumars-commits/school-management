@@ -51,7 +51,6 @@ it("edits a student: Edit prefills the form, save PATCHes it", async () => {
       year: 2,
     }),
   );
-  // back to add mode
   expect(await screen.findByText("Add student", { selector: "h2" })).toBeInTheDocument();
 });
 

@@ -19,7 +19,6 @@ Be practical and encouraging, and keep answers short.`,
   },
 };
 
-// returns the one settings document, creating it with defaults the first time
 export async function getSettings() {
   let doc = await Setting.findOne({ key: "main" });
   if (!doc) {
@@ -32,7 +31,6 @@ export async function getSettings() {
   return doc;
 }
 
-// what any logged-in user may know about the current mode
 export function publicView(s) {
   return {
     version: s.version,
@@ -43,7 +41,6 @@ export function publicView(s) {
 
 const isNum = (v) => typeof v === "number" && Number.isFinite(v);
 
-// validates the admin's PUT body; returns { error } or { patch }
 export function validateConfig(body) {
   const patch = {};
   if (body.version !== undefined) {

@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-// teacher adds a remark (rating + comment) about one student
 export default function RemarkForm({ student, onSubmit, onCancel }) {
   const [rating, setRating] = useState(3);
   const [comment, setComment] = useState("");

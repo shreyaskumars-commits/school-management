@@ -4,8 +4,6 @@ import { requireLogin } from "../middlewares/auth.js";
 
 const router = Router();
 
-// requireLogin is per route: this router is mounted at "/", so a router-wide
-// check would also block /login and the welcome page
 router.get("/config", requireLogin, controller.publicConfig);
 router.post(
   "/remarks",

@@ -25,7 +25,7 @@ export async function sendMessage(req, res) {
     return res.status(429).json({ error: "Daily chat limit reached." });
   }
 
-  // the role comes from the login session, never from the request body
+  // role comes from the session, never the request body
   const history = trimHistory(convo.messages, { maxTokens: CHAT_HISTORY_TOKENS });
   const setup = await loadChatSetup(req.user.role);
   const messages = [
@@ -34,7 +34,6 @@ export async function sendMessage(req, res) {
     { role: "user", content: text },
   ];
 
-  // stop paying for tokens if the user closes the chat mid-reply
   const controller = new AbortController();
   res.on("close", () => {
     if (!res.writableEnded) controller.abort();
@@ -67,7 +66,6 @@ export async function sendMessage(req, res) {
     }
   }
 
-  // save after the stream: the user's message + whatever reply we got
   const newMessages = [{ role: "user", content: text }];
   if (reply) newMessages.push({ role: "assistant", content: reply });
   await Conversation.updateOne(

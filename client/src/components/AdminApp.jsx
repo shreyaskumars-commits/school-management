@@ -1,6 +1,5 @@
 import AdminPage from "./AdminPage.jsx";
 
-// what the admin sees: the settings page only (no student table, no chat)
 export default function AdminApp({ userId, onLogout }) {
   return (
     <>

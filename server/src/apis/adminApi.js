@@ -8,7 +8,6 @@ router.use(requireLogin, requireRole("admin"));
 
 router.get("/config", controller.getConfig);
 router.put("/config", controller.putConfig);
-// the .xlsx is sent as raw bytes, so no multipart library is needed
 router.post(
   "/excel",
   raw({ type: "application/octet-stream", limit: "5mb" }),

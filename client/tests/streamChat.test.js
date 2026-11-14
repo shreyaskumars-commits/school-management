@@ -24,7 +24,7 @@ it("passes every decoded piece to onChunk", async () => {
 });
 
 it("does not break a character split across two chunks", async () => {
-  const bytes = new TextEncoder().encode("é"); // 2 bytes
+  const bytes = new TextEncoder().encode("é");
   vi.stubGlobal(
     "fetch",
     vi.fn().mockResolvedValue({

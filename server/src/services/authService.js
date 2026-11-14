@@ -4,7 +4,6 @@ import { User } from "../models/User.js";
 const SALT = "college-demo-salt";
 const hash = (password) => scryptSync(password, SALT, 32).toString("hex");
 
-// demo accounts, created only when the user collection is empty
 export async function seedUsers() {
   if ((await User.countDocuments()) === 0) {
     await User.create([
@@ -13,17 +12,14 @@ export async function seedUsers() {
     ]);
     console.log("Seeded demo users: principal, teacher");
   }
-  // also runs on databases that already have users
   if (!(await User.exists({ Username: "admin" }))) {
     await User.create({ Username: "admin", Password: hash("admin123"), role: "admin" });
     console.log("Seeded demo user: admin");
   }
 }
 
-// token -> { userId, role }; lives in memory, so a restart logs everyone out
 const sessions = new Map();
 
-// returns { token, userId, role }, or null for a wrong id or password
 export async function login(userId, password) {
   const user = await User.findOne({ Username: userId }).lean();
   if (!user) return null;

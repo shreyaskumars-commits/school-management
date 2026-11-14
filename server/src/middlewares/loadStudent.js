@@ -1,6 +1,5 @@
 import { Student } from "../models/Student.js";
 
-// finds the student by its numeric id, or answers 400 / 404
 export async function loadStudent(req, res, next) {
   const id = Number(req.params.id);
   if (!Number.isInteger(id) || id < 1) {

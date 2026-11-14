@@ -3,7 +3,6 @@ import { LLM_MODEL } from "../config/index.js";
 
 class NotConfiguredError extends Error {}
 
-
 let client;
 function getClient() {
   if (!process.env.OPENAI_API_KEY || !LLM_MODEL()) {
@@ -11,26 +10,23 @@ function getClient() {
   }
   client ??= new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
-    timeout: 30 * 1000, // give up on one attempt after 30 seconds
-    maxRetries: 2, // retry 429, 5xx and timeouts up to 2 times
+    timeout: 30 * 1000,
+    maxRetries: 2,
   });
   return client;
 }
 
-
 export const llm = {
-  // options (V2 only): { temperature, maxTokens } set by the admin
   startChatStream(messages, signal, options = {}) {
     const params = { model: LLM_MODEL(), messages, stream: true };
     if (options.temperature != null) params.temperature = options.temperature;
     if (options.maxTokens != null) params.max_completion_tokens = options.maxTokens;
     return getClient().chat.completions.create(
       params,
-      { signal } // request options go in the SECOND argument
+      { signal }
     );
   },
 };
-
 
 export function toFriendlyError(err) {
   if (err instanceof NotConfiguredError) {
@@ -67,7 +63,6 @@ export function toFriendlyError(err) {
 }
 
 export const estimateTokens = (text) => Math.ceil(text.length / 4);
-
 
 export function trimHistory(messages, { maxTokens = 3000, maxMessages = 20 } = {}) {
   const kept = [];

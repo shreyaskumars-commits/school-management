@@ -1,4 +1,3 @@
-// onRemark set -> each row gets an "Add remark" button; remarkDisabled greys it out
 export default function StudentTable({
   students, onEdit, onDelete, onRemark, remarkDisabled, remarkHint,
 }) {

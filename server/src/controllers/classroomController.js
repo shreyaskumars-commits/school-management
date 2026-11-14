@@ -4,7 +4,6 @@ export function notes(req, res) {
   });
 }
 
-// shows the error handler: throwing here ends up as a 500
 export function crash() {
   throw new Error("Demo crash");
 }
