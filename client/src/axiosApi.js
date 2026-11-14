@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 let session = JSON.parse(sessionStorage.getItem("session") ?? "null");
 
 export const getSession = () => session;
@@ -13,7 +12,7 @@ function saveSession(value) {
 const http = axios.create({
   baseURL: import.meta.env.VITE_API_URL ?? "http://localhost:3000",
   headers: { "Content-Type": "application/json" },
-  timeout: 10000, // give up after 10 seconds instead of hanging forever
+  timeout: 10000,
 });
 
 http.interceptors.request.use((config) => {
@@ -53,7 +52,6 @@ export async function logout() {
   }
 }
 
-// axios builds the query string from `params` and skips undefined values
 export function getStudents({ page, limit, department }) {
   return http.get("/students", {
     params: { page, limit, department: department || undefined },
@@ -61,7 +59,7 @@ export function getStudents({ page, limit, department }) {
 }
 
 export function createStudent(student) {
-  return http.post("/students", student); // axios turns the object into JSON
+  return http.post("/students", student);
 }
 
 export function updateStudent(id, changes) {

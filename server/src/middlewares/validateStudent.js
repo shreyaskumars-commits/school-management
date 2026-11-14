@@ -1,6 +1,5 @@
 import { checkValues } from "../utils/validators.js";
 
-// check the body of POST /students
 export function validateStudent(req, res, next) {
   const { name, department } = req.body ?? {};
   if (name === undefined || department === undefined) {

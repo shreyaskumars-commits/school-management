@@ -3,7 +3,6 @@ const isText = (v) =>
 const isYear = (v) =>
   Number.isInteger(v) && v >= 1 && v <= 4;
 
-// returns an error message, or nothing if all is fine
 export function checkValues({ name, department, year }) {
   if (name !== undefined && !isText(name)) {
     return "name must be text";

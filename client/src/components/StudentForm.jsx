@@ -2,7 +2,6 @@ import { useState } from "react";
 
 const EMPTY = { name: "", department: "", year: 1 };
 
-// `student` set -> edit mode; the parent remounts this form (via key) per student
 export default function StudentForm({ student, message, onSubmit, onCancel }) {
   const [values, setValues] = useState(student ?? EMPTY);
   const editing = Boolean(student);

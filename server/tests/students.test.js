@@ -1,10 +1,8 @@
 import { after, before, describe, it } from "node:test";
 import assert from "node:assert/strict";
 
-// use a separate database so the real data is never touched
 process.env.MONGO_URI = "mongodb://localhost:27017/School_test";
 
-// server.js starts listening on port 3000 as soon as it is imported
 const BASE = "http://localhost:3000";
 let server;
 let principalToken;
@@ -26,7 +24,7 @@ const SEED = [
   { name: "John", department: "MECH", year: 4 },
 ];
 let firstId;
-const MISSING_ID = 999999; // valid number, no such student
+const MISSING_ID = 999999;
 
 before(async () => {
   server = await import("../server.js");
@@ -36,9 +34,8 @@ before(async () => {
   principalToken = (await login("principal", "principal123")).token;
   teacherToken = (await login("teacher", "teacher123")).token;
 });
-after(() => process.exit(0)); // the app has no close(), so end the process
+after(() => process.exit(0));
 
-// logs in as the principal unless the headers say otherwise
 async function call(method, path, body, headers = { authorization: `Bearer ${principalToken}` }) {
   const res = await fetch(BASE + path, {
     method,

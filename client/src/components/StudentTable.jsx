@@ -1,4 +1,6 @@
-export default function StudentTable({ students, onEdit, onDelete }) {
+export default function StudentTable({
+  students, onEdit, onDelete, onRemark, remarkDisabled, remarkHint,
+}) {
   return (
     <table>
       <thead>
@@ -22,6 +24,18 @@ export default function StudentTable({ students, onEdit, onDelete }) {
                 <button className="btn small" onClick={() => onEdit(s)}>
                   Edit
                 </button>{" "}
+                {onRemark && (
+                  <>
+                    <button
+                      className="btn small"
+                      disabled={remarkDisabled}
+                      title={remarkDisabled ? remarkHint : undefined}
+                      onClick={() => onRemark(s)}
+                    >
+                      Add remark
+                    </button>{" "}
+                  </>
+                )}
                 {onDelete && (
                   <button className="btn small danger" onClick={() => onDelete(s)}>
                     Delete
