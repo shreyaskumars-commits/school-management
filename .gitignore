@@ -3,3 +3,5 @@ node_modules
 
 # API client collections
 api-tests/
+
+.claude/
